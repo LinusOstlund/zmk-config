@@ -28,8 +28,8 @@ layout** for symbols to work correctly.
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │SHFT │  Z  │  X  │  C  │  V  │  B  │ [ENC]   │  N  │  M  │ ,;  │ .:  │ -_  │SHFT │
 └─────┴─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┴─────┘
-            │ GUI │ ALT │CTRL │LOWER│   SPC   │RAISE│CTRL │ ALT │ GUI │
-            └─────┴─────┴─────┴─────┘         └─────┴─────┴─────┴─────┘
+            │ GUI │ ALT │CTRL │LOWER│   SPC    RET   │RAISE│CTRL │ ALT │ GUI │
+            └─────┴─────┴─────┴─────┘                └─────┴─────┴─────┴─────┘
 ```
 
 **Key differences from standard Sofle:**
@@ -38,55 +38,83 @@ layout** for symbols to work correctly.
 - Enter next to P
 - `'` and `+/?` on home row (where ö/ä would be on full Swedish keyboard)
 - Swedish symbols via combos
+- Left thumb = Space, Right thumb = Enter
 
-### Swedish Character Combos
+### Combos
 
 Press keys **simultaneously** (within 50ms):
 
-| Combo        | Output | Description        |
-| ------------ | ------ | ------------------ |
-| P + Enter    | å      | Adjacent keys      |
-| L + '        | ö      | Roll pinky right   |
-| ' + +/?      | ä      | Roll pinky further |
+| Combo        | Output      | Description        |
+| ------------ | ----------- | ------------------ |
+| P + Enter    | å           | Adjacent keys      |
+| L + '        | ö           | Roll pinky right   |
+| ' + +/?      | ä           | Roll pinky further |
+| S + P        | Spotlight   | Cmd+Space          |
 
-### RAISE Layer
+### LOWER Layer (Left Thumb)
 
-Hold RAISE (right thumb) to access:
+Hold LOWER for navigation and symbols:
 
 ```text
 ┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
-│BTCLR│ BT1 │ BT2 │ BT3 │ BT4 │ BT5 │         │     │     │  [  │  ]  │     │     │
+│     │ F1  │  @  │ F3  │  $  │ F5  │         │ F6  │     │ [/{ │ ]/} │     │ DEL │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│     │     │     │  ↑  │     │     │         │PGUP │HOME │  ↑  │ END │     │     │
+│     │     │     │  ↑  │     │     │         │PGUP │ ←W  │  ↑  │  W→ │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│     │     │  ←  │  ↓  │  →  │     │         │PGDN │  ←  │  ↓  │  →  │ DEL │  ~  │
+│     │     │  ←  │  ↓  │  →  │     │         │PGDN │  ←  │  ↓  │  →  │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│     │ <>  │ CUT │COPY │PASTE│     │         │     │     │     │     │     │     │
+│     │  <  │  >  │     │     │     │         │     │     │     │     │  \  │     │
 └─────┴─────┴─────┴─────┴─────┴─────┘         └─────┴─────┴─────┴─────┴─────┴─────┘
 ```
 
 **Special behaviors:**
 
-| Keys               | Output | Notes                    |
-| ------------------ | ------ | ------------------------ |
-| RAISE + 8          | `[`    | Left bracket             |
-| RAISE + 9          | `]`    | Right bracket            |
-| Shift + RAISE + 8  | `{`    | Left brace (mod-morph)   |
-| Shift + RAISE + 9  | `}`    | Right brace (mod-morph)  |
-| RAISE + Z          | `<`    | Shift for `>`            |
-| RAISE + +/?        | `~`    | Tilde (macro: dead key + space) |
+| Keys       | Output   | Notes                            |
+| ---------- | -------- | -------------------------------- |
+| LOWER + 8  | `[`      | Tap-dance: tap = [               |
+| LOWER + 88 | `{`      | Tap-dance: double-tap = {        |
+| LOWER + 9  | `]`      | Tap-dance: tap = ]               |
+| LOWER + 99 | `}`      | Tap-dance: double-tap = }        |
+| LOWER + Z  | `<`      | Less than                        |
+| LOWER + X  | `>`      | Greater than                     |
+| LOWER + U  | Word ←   | Option+Left (jump word left)     |
+| LOWER + O  | Word →   | Option+Right (jump word right)   |
 
-### ADJUST Layer
+### RAISE Layer (Right Thumb)
 
-Hold **LOWER + RAISE** together:
+Hold RAISE for BT controls, tilde, and DEL:
+
+```text
+┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
+│BTCLR│ BT1 │ BT2 │ BT3 │ BT4 │ BT5 │         │     │     │     │     │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │     │     │     │     │         │     │     │     │     │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │     │     │     │     │         │     │     │     │     │ DEL │  ~  │
+├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │ CUT │COPY │PASTE│     │         │     │     │     │     │     │     │
+└─────┴─────┴─────┴─────┴─────┴─────┘         └─────┴─────┴─────┴─────┴─────┴─────┘
+```
+
+**Special behaviors:**
+
+| Keys         | Output | Notes                           |
+| ------------ | ------ | ------------------------------- |
+| RAISE + +/?  | `~`    | Tilde (macro: dead key + space) |
+| RAISE + '    | DEL    | Delete key                      |
+| RAISE + X    | Cut    | K_CUT                           |
+| RAISE + C    | Copy   | K_COPY                          |
+| RAISE + V    | Paste  | K_PASTE                         |
+
+### ADJUST Layer (LOWER + RAISE)
+
+Hold **both layer keys** together:
 
 - **Row 0:** Bluetooth device selection (1-5), BT Clear (§)
-- **Row 1-2:** RGB controls
+- **Row 1:** External power toggle, RGB hue/saturation
+- **Row 2:** RGB brightness
+- **Row 3 (Z,X,C,V,B):** RGB Toggle, Effects, Hue+, Sat+, Brightness+
 - **Encoder:** RGB toggle
-
-### LOWER Layer
-
-Standard symbols and F-keys (note: some symbols differ on Swedish OS).
 
 ## Swedish OS Symbol Reference
 
@@ -193,7 +221,8 @@ zmk-config/
 - [ ] Mouse keys layer
 - [ ] Macro for common phrases
 - [ ] Sticky/one-shot modifiers
-- [ ] Tap-dance for parentheses
+- [ ] Mod-tap: hold Space = Shift, hold Enter = Ctrl
+- [ ] Word selection tap-dance (tap = word jump, hold = select line)
 
 ## Resources
 
