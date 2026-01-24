@@ -42,14 +42,14 @@ layout** for symbols to work correctly.
 
 ### Combos
 
-Press keys **simultaneously** (within 50ms):
+Press keys **simultaneously** (within 50ms) on BASE layer:
 
-| Combo        | Output      | Description        |
-| ------------ | ----------- | ------------------ |
-| P + Enter    | å           | Adjacent keys      |
-| L + '        | ö           | Roll pinky right   |
-| ' + +/?      | ä           | Roll pinky further |
-| S + P        | Spotlight   | Cmd+Space          |
+| Combo        | Output      | Description           |
+| ------------ | ----------- | --------------------- |
+| P + Enter    | å           | Adjacent keys (pos 22+23) |
+| L + '        | ö           | Roll pinky right (pos 33+34) |
+| ' + +/?      | ä           | Roll pinky further (pos 34+35) |
+| S + P        | Spotlight   | Cmd+Space (pos 26+22) |
 
 ### LOWER Layer (Left Thumb)
 
@@ -62,7 +62,7 @@ Hold LOWER for navigation and symbols:
 │     │     │     │  ↑  │     │     │         │PGUP │ ←W  │  ↑  │  W→ │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │     │     │  ←  │  ↓  │  →  │     │         │PGDN │  ←  │  ↓  │  →  │     │     │
-├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+├─────┼─────┼─────┼─────┼─────┼─────┼ [ENC]   ├─────┼─────┼─────┼─────┼─────┼─────┤
 │     │  <  │  >  │     │     │     │         │     │     │     │     │  \  │     │
 └─────┴─────┴─────┴─────┴─────┴─────┘         └─────┴─────┴─────┴─────┴─────┴─────┘
 ```
@@ -91,8 +91,8 @@ Hold RAISE for BT controls, tilde, and DEL:
 │     │     │     │     │     │     │         │     │     │     │     │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │     │     │     │     │     │     │         │     │     │     │     │ DEL │  ~  │
-├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│     │     │ CUT │COPY │PASTE│     │         │     │     │     │     │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┼ [ENC]   ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │ CUT │COPY │PASTE│UNLK │         │     │     │     │     │     │     │
 └─────┴─────┴─────┴─────┴─────┴─────┘         └─────┴─────┴─────┴─────┴─────┴─────┘
 ```
 
@@ -105,16 +105,29 @@ Hold RAISE for BT controls, tilde, and DEL:
 | RAISE + X    | Cut    | K_CUT                           |
 | RAISE + C    | Copy   | K_COPY                          |
 | RAISE + V    | Paste  | K_PASTE                         |
+| RAISE + B    | Unlock | ZMK Studio unlock               |
 
 ### ADJUST Layer (LOWER + RAISE)
 
 Hold **both layer keys** together:
 
+```text
+┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
+│BTCLR│ BT1 │ BT2 │ BT3 │ BT4 │ BT5 │         │     │     │     │     │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+│EPWR │HUE- │HUE+ │SAT- │SAT+ │ EFF │         │     │     │     │     │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │BRI- │BRI+ │     │     │     │         │     │     │     │     │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┼RGB_TOG  ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │ TOG │ EFF │HUE+ │SAT+ │BRI+ │         │     │     │     │     │     │     │
+└─────┴─────┴─────┴─────┴─────┴─────┘         └─────┴─────┴─────┴─────┴─────┴─────┘
+```
+
 - **Row 0:** Bluetooth device selection (1-5), BT Clear (§)
-- **Row 1:** External power toggle, RGB hue/saturation
-- **Row 2:** RGB brightness
+- **Row 1:** External power toggle, RGB hue/saturation/effects
+- **Row 2:** RGB brightness adjustment
 - **Row 3 (Z,X,C,V,B):** RGB Toggle, Effects, Hue+, Sat+, Brightness+
-- **Encoder:** RGB toggle
+- **Left Encoder:** RGB toggle
 
 ## Swedish OS Symbol Reference
 
@@ -212,6 +225,23 @@ zmk-config/
 │   └── build.yml                 # GitHub Actions build
 └── README.md
 ```
+
+## Custom Behaviors
+
+### Tap-Dance (Brackets)
+
+| Key (LOWER) | Tap   | Double-Tap |
+| ----------- | ----- | ---------- |
+| 8 position  | `[`   | `{`        |
+| 9 position  | `]`   | `}`        |
+
+Tapping term: 200ms
+
+### Macros
+
+| Name   | Output | Implementation              |
+| ------ | ------ | --------------------------- |
+| tilde  | `~`    | AltGr+RBKT then Space (dead key sequence) |
 
 ## Backlog / Future Ideas
 
