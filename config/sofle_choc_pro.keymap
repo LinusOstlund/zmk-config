@@ -19,32 +19,57 @@
 
 / {
 
-  // Swedish character combos (å ä ö)
-  // Key positions: A=25, E=15, O=21
+  // Macro for tilde (dead key + space on Swedish)
+  macros {
+    tilde: tilde_macro {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&kp RA(RBKT) &kp SPACE>;  // AltGr+¨ then space = ~
+    };
+  };
+
+  // Mod-morph for brackets: RAISE+8/9 = [], Shift+RAISE+8/9 = {}
+  behaviors {
+    bkt_l: bracket_brace_left {
+      compatible = "zmk,behavior-mod-morph";
+      #binding-cells = <0>;
+      bindings = <&kp RA(N8)>, <&kp RA(N7)>;  // [ or {
+      mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    bkt_r: bracket_brace_right {
+      compatible = "zmk,behavior-mod-morph";
+      #binding-cells = <0>;
+      bindings = <&kp RA(N9)>, <&kp RA(N0)>;  // ] or }
+      mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+  };
+
+  // Swedish character combos (å ä ö) - adjacent key pairs
+  // P=22, Enter=23, L=33, '=34, +/?=35
   combos {
     compatible = "zmk,combos";
 
-    // å: A + O pressed together (sends LBKT which is å on Swedish OS)
+    // å: P + Enter pressed together
     combo_ao {
       timeout-ms = <50>;
-      key-positions = <25 21>;
+      key-positions = <22 23>;
       bindings = <&kp LBKT>;
       layers = <BASE>;
     };
 
-    // ä: A + E pressed together (sends SQT which is ä on Swedish OS)
-    combo_ae {
+    // ö: L + ' pressed together
+    combo_oe {
       timeout-ms = <50>;
-      key-positions = <25 15>;
-      bindings = <&kp SQT>;
+      key-positions = <33 34>;
+      bindings = <&kp SEMI>;
       layers = <BASE>;
     };
 
-    // ö: O + E pressed together (sends SEMI which is ö on Swedish OS)
-    combo_oe {
+    // ä: ' + +/? pressed together
+    combo_ae {
       timeout-ms = <50>;
-      key-positions = <21 15>;
-      bindings = <&kp SEMI>;
+      key-positions = <34 35>;
+      bindings = <&kp SQT>;
       layers = <BASE>;
     };
   };
@@ -63,18 +88,20 @@
 
     default_layer {
       display-name = "default";
+      // Swedish-optimized layout
       // ------------------------------------------------------------------------------------------------------------
-      // |   `   |  1  |  2  |  3   |  4   |  5   |                   |  6   |  7    |  8    |  9   |   0   |   `   |
-      // |  ESC  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   | BKSPC |
-      // |  TAB  |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |   ;   |   '   |
-      // | SHIFT |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  | PLAY  |  N   |  M    |  ,    |  .   |   /   | SHIFT |
-      //               | GUI | ALT  | CTRL | LOWER|  ENTER |  | SPACE | RAISE| CTRL  | ALT   | GUI  |
+      // |   §   |  1  |  2  |  3   |  4   |  5   |                   |  6   |  7    |  8    |  9   |   0   | BKSPC |
+      // |  ESC  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   | ENTER |
+      // |  TAB  |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |   '   |  +/?  |
+      // | SHIFT |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  | PLAY  |  N   |  M    |  ,;   |  .:  |  -_   | SHIFT |
+      //               | GUI | ALT  | CTRL | LOWER|  SPACE |  | SPACE | RAISE| CTRL  | ALT   | GUI  |
+      // Combos: A+O=å, A+E=ä, O+E=ö
       bindings = <
-        &kp GRAVE &kp N1 &kp N2   &kp N3   &kp N4    &kp N5                           &kp N6 &kp N7    &kp N8    &kp N9   &kp N0   &kp GRAVE
-        &kp ESC   &kp Q  &kp W    &kp E    &kp R     &kp T                            &kp Y  &kp U     &kp I     &kp O    &kp P    &kp BSPC
-        &kp TAB   &kp A  &kp S    &kp D    &kp F     &kp G                            &kp H  &kp J     &kp K     &kp L    &kp SEMI &kp SQT
+        &kp GRAVE &kp N1 &kp N2   &kp N3   &kp N4    &kp N5                           &kp N6 &kp N7    &kp N8    &kp N9   &kp N0   &kp BSPC
+        &kp ESC   &kp Q  &kp W    &kp E    &kp R     &kp T                            &kp Y  &kp U     &kp I     &kp O    &kp P    &kp RET
+        &kp TAB   &kp A  &kp S    &kp D    &kp F     &kp G                            &kp H  &kp J     &kp K     &kp L    &kp BSLH &kp MINUS
         &kp LSHFT &kp Z  &kp X    &kp C    &kp V     &kp B   &kp C_MUTE &kp C_PLAY    &kp N  &kp M     &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
-        &kp LGUI &kp LALT &kp LCTRL &mo LOWER  &kp RET    &kp SPACE  &mo RAISE  &kp RCTRL &kp RALT  &kp RGUI
+        &kp LGUI &kp LALT &kp LCTRL &mo LOWER  &kp SPACE    &kp SPACE  &mo RAISE  &kp RCTRL &kp RALT  &kp RGUI
       >;
 
       sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
@@ -103,15 +130,15 @@
       display-name = "raise";
       // ------------------------------------------------------------------------------------------------------------
       // | BTCLR | BT1  | BT2  |  BT3  |  BT4  |  BT5 |                |      |      |       |      |       |       |
-      // |       | INS  | PSCR | GUI   |       |      |                | PGUP |      |   ^   |      |       |       |
-      // |       | ALT  | CTRL | SHIFT |       | CAPS |                | PGDN |   <- |   v   |  ->  |  DEL  | BKSPC |
-      // |       | UNDO | CUT  | COPY  | PASTE |      |      |  |      |      |      |       |      |       |       |
+      // |       |      |      |   ^   |       |      |                | PGUP | HOME |   ^   |  END |       |       |
+      // |       |      |  <-  |   v   |  ->   |      |                | PGDN |  <-  |   v   |  ->  |  DEL  | BKSPC |
+      // |       | </>  | CUT  | COPY  | PASTE |      |      |  |      |      |      |       |      |       |       |
       //                |      |       |       |      |      |  |      |      |      |       |      |
       bindings = <
-        &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4                  &trans    &trans    &trans   &trans    &trans  &trans
-        &trans     &kp INS      &kp PSCRN    &kp K_CMENU  &trans       &trans                        &kp PG_UP &trans    &kp UP   &trans    &kp N0  &trans
-        &trans     &kp LALT     &kp LCTRL    &kp LSHFT    &trans       &kp CLCK                      &kp PG_DN &kp LEFT  &kp DOWN &kp RIGHT &kp DEL &kp BSPC
-        &trans     &kp K_UNDO   &kp K_CUT    &kp K_COPY   &kp K_PASTE  &studio_unlock        &trans  &trans  &trans    &trans    &trans   &trans    &trans  &trans
+        &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4                  &trans    &trans    &bkt_l   &bkt_r    &trans  &trans
+        &trans     &trans       &trans       &kp UP       &trans       &trans                        &kp PG_UP &kp HOME  &kp UP   &kp END   &trans  &trans
+        &trans     &trans       &kp LEFT     &kp DOWN     &kp RIGHT    &trans                        &kp PG_DN &kp LEFT  &kp DOWN &kp RIGHT &kp DEL &tilde
+        &trans     &kp NUBS     &kp K_CUT    &kp K_COPY   &kp K_PASTE  &studio_unlock        &trans  &trans  &trans    &trans    &trans   &trans    &trans  &trans
         &trans       &trans       &trans       &trans        &trans  &trans  &trans    &trans    &trans   &trans
       >;
 
