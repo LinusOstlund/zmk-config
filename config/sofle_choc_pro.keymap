@@ -35,7 +35,7 @@
     m_lbrc: macro_left_brace {
       compatible = "zmk,behavior-macro";
       #binding-cells = <0>;
-      bindings = <&kp RA(N7)>;  // {
+      bindings = <&kp LS(RA(N8))>;  // { = Option+Shift+8 on macOS Swedish
     };
     m_rbkt: macro_right_bracket {
       compatible = "zmk,behavior-macro";
@@ -45,13 +45,13 @@
     m_rbrc: macro_right_brace {
       compatible = "zmk,behavior-macro";
       #binding-cells = <0>;
-      bindings = <&kp RA(N0)>;  // }
+      bindings = <&kp LS(RA(N9))>;  // } = Option+Shift+9 on macOS Swedish
     };
-    // Pipe macro (AltGr + <, but since NUBS is broken, try RA(GRAVE))
+    // Pipe macro - Option+7 on macOS Swedish
     m_pipe: macro_pipe {
       compatible = "zmk,behavior-macro";
       #binding-cells = <0>;
-      bindings = <&kp RA(NUBS)>;  // | - may need adjustment
+      bindings = <&kp RA(N7)>;  // | = Option+7 on macOS Swedish
     };
   };
 
