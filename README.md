@@ -22,9 +22,9 @@ layout** for symbols to work correctly.
 ┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
 │  §  │  1  │  2  │  3  │  4  │  5  │         │  6  │  7  │  8  │  9  │  0  │BSPC │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│ ESC │  Q  │  W  │  E  │  R  │  T  │         │  Y  │  U  │  I  │  O  │  P  │ RET │
+│ ESC │  Q  │  W  │  E  │  R  │  T  │         │  Y  │  U  │  I  │  O  │  P  │ ^/~ │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│ TAB │  A  │  S  │  D  │  F  │  G  │         │  H  │  J  │  K  │  L  │  '  │ +/? │
+│ TAB │  A  │  S  │  D  │  F  │  G  │         │  H  │  J  │  K  │  L  │ +/? │  '  │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │SHFT │  Z  │  X  │  C  │  V  │  B  │ [ENC]   │  N  │  M  │ ,;  │ .:  │ -_  │SHFT │
 └─────┴─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┴─────┘
@@ -35,10 +35,10 @@ layout** for symbols to work correctly.
 **Key differences from standard Sofle:**
 
 - BSPC next to 0 (top right)
-- Enter next to P
-- `'` and `+/?` on home row (where ö/ä would be on full Swedish keyboard)
+- `^/~` next to P (tap-dance: tap=^, double-tap=~)
+- `+/?` and `'` on home row (where ö/ä would be on full Swedish keyboard)
 - Swedish symbols via combos
-- Left thumb = Space, Right thumb = Enter
+- Left thumb = Space, Right thumb = Enter (only Enter location)
 
 ### Combos
 
@@ -46,9 +46,9 @@ Press keys **simultaneously** (within 50ms) on BASE layer:
 
 | Combo        | Output      | Description           |
 | ------------ | ----------- | --------------------- |
-| P + Enter    | å           | Adjacent keys (pos 22+23) |
-| L + '        | ö           | Roll pinky right (pos 33+34) |
-| ' + +/?      | ä           | Roll pinky further (pos 34+35) |
+| P + ^/~      | å           | Adjacent keys (pos 22+23) |
+| L + +/?      | ö           | Roll pinky right (pos 33+34) |
+| +/? + '      | ä           | Roll pinky further (pos 34+35) |
 | S + P        | Spotlight   | Cmd+Space (pos 26+22) |
 
 ### LOWER Layer (Left Thumb)
@@ -57,11 +57,11 @@ Hold LOWER for navigation and symbols:
 
 ```text
 ┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
-│     │ F1  │  @  │ F3  │  $  │ F5  │         │ F6  │     │ [/{ │ ]/} │     │ DEL │
+│     │  !  │ "/@ │  #  │  $  │  %  │         │  &  │  |  │ [/{ │ ]/} │ =/? │ DEL │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │     │     │     │  ↑  │     │     │         │PGUP │ ←W  │  ↑  │  W→ │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│     │     │  ←  │  ↓  │  →  │     │         │PGDN │  ←  │  ↓  │  →  │     │     │
+│     │     │  ←  │  ↓  │  →  │     │         │PGDN │  ←  │  ↓  │  →  │  ´  │  *  │
 ├─────┼─────┼─────┼─────┼─────┼─────┼ [ENC]   ├─────┼─────┼─────┼─────┼─────┼─────┤
 │     │  <  │  >  │     │     │     │         │     │     │     │     │  \  │     │
 └─────┴─────┴─────┴─────┴─────┴─────┘         └─────┴─────┴─────┴─────┴─────┴─────┘
@@ -71,12 +71,16 @@ Hold LOWER for navigation and symbols:
 
 | Keys       | Output   | Notes                            |
 | ---------- | -------- | -------------------------------- |
+| LOWER + 7  | `\|`     | Pipe (single tap)                |
 | LOWER + 8  | `[`      | Tap-dance: tap = [               |
 | LOWER + 88 | `{`      | Tap-dance: double-tap = {        |
 | LOWER + 9  | `]`      | Tap-dance: tap = ]               |
 | LOWER + 99 | `}`      | Tap-dance: double-tap = }        |
+| LOWER + +/?| `´`      | Acute accent                     |
+| LOWER + '  | `*`      | Asterisk                         |
 | LOWER + Z  | `<`      | Less than                        |
 | LOWER + X  | `>`      | Greater than                     |
+| LOWER + -_ | `\`      | Backslash                        |
 | LOWER + U  | Word ←   | Option+Left (jump word left)     |
 | LOWER + O  | Word →   | Option+Right (jump word right)   |
 
@@ -100,8 +104,8 @@ Hold RAISE for BT controls, tilde, and DEL:
 
 | Keys         | Output | Notes                           |
 | ------------ | ------ | ------------------------------- |
-| RAISE + +/?  | `~`    | Tilde (macro: dead key + space) |
-| RAISE + '    | DEL    | Delete key                      |
+| RAISE + +/?  | DEL    | Delete key                      |
+| RAISE + '    | `~`    | Tilde (macro: dead key + space) |
 | RAISE + X    | Cut    | K_CUT                           |
 | RAISE + C    | Copy   | K_COPY                          |
 | RAISE + V    | Paste  | K_PASTE                         |
