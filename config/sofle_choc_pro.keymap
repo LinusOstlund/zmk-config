@@ -60,13 +60,13 @@
     td_lbkt: tap_dance_left_bracket {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
-      tapping-term-ms = <250>;
+      tapping-term-ms = <125>;
       bindings = <&m_lbkt>, <&m_lbrc>;  // tap=[, double-tap={
     };
     td_rbkt: tap_dance_right_bracket {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
-      tapping-term-ms = <250>;
+      tapping-term-ms = <125>;
       bindings = <&m_rbkt>, <&m_rbrc>;  // tap=], double-tap=}
     };
 
@@ -76,14 +76,14 @@
       compatible = "zmk,behavior-hold-tap";
       #binding-cells = <2>;
       flavor = "tap-preferred";
-      tapping-term-ms = <200>;
+      tapping-term-ms = <125>;
       bindings = <&kp>, <&kp>;
     };
     ht_word_r: hold_tap_word_right {
       compatible = "zmk,behavior-hold-tap";
       #binding-cells = <2>;
       flavor = "tap-preferred";
-      tapping-term-ms = <200>;
+      tapping-term-ms = <125>;
       bindings = <&kp>, <&kp>;
     };
 
@@ -92,21 +92,21 @@
     td_n2: tap_dance_2 {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
-      tapping-term-ms = <250>;
+      tapping-term-ms = <125>;
       bindings = <&kp LS(N2)>, <&kp RA(N2)>;  // " then @
     };
     // 7: tap = /, double-tap = |
     td_n7: tap_dance_7 {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
-      tapping-term-ms = <250>;
+      tapping-term-ms = <125>;
       bindings = <&kp LS(N7)>, <&m_pipe>;  // / then |
     };
     // 0: tap = =, double-tap = ?
     td_n0: tap_dance_0 {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
-      tapping-term-ms = <250>;
+      tapping-term-ms = <125>;
       bindings = <&kp LS(N0)>, <&kp LS(MINUS)>;  // = then ?
     };
 
@@ -115,7 +115,7 @@
     td_caret_tilde: tap_dance_caret_tilde {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
-      tapping-term-ms = <250>;
+      tapping-term-ms = <125>;
       bindings = <&kp LS(RBKT)>, <&tilde>;  // ^ then ~
     };
   };
