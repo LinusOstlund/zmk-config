@@ -92,7 +92,7 @@
     td_n2: tap_dance_2 {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
-      tapping-term-ms = <125>;
+      tapping-term-ms = <175>;
       bindings = <&kp LS(N2)>, <&kp RA(N2)>;  // " then @
     };
     // 7: tap = /, double-tap = |
