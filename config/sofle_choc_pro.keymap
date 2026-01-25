@@ -19,28 +19,95 @@
 
 / {
 
-  // Macro for tilde (dead key + space on Swedish)
+  // Macros for Swedish symbols
   macros {
     tilde: tilde_macro {
       compatible = "zmk,behavior-macro";
       #binding-cells = <0>;
       bindings = <&kp RA(RBKT) &kp SPACE>;  // AltGr+¨ then space = ~
     };
+    // Bracket macros for tap-dance (explicit for reliability)
+    m_lbkt: macro_left_bracket {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&kp RA(N8)>;  // [
+    };
+    m_lbrc: macro_left_brace {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&kp RA(N7)>;  // {
+    };
+    m_rbkt: macro_right_bracket {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&kp RA(N9)>;  // ]
+    };
+    m_rbrc: macro_right_brace {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&kp RA(N0)>;  // }
+    };
+    // Pipe macro (AltGr + <, but since NUBS is broken, try RA(GRAVE))
+    m_pipe: macro_pipe {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&kp RA(NUBS)>;  // | - may need adjustment
+    };
   };
 
-  // Tap-dance for brackets: tap=[], double-tap={}
   behaviors {
+    // Tap-dance for brackets: tap=[], double-tap={}
     td_lbkt: tap_dance_left_bracket {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&kp RA(N8)>, <&kp RA(N7)>;  // tap=[, double-tap={
+      tapping-term-ms = <250>;
+      bindings = <&m_lbkt>, <&m_lbrc>;  // tap=[, double-tap={
     };
     td_rbkt: tap_dance_right_bracket {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
+      tapping-term-ms = <250>;
+      bindings = <&m_rbkt>, <&m_rbrc>;  // tap=], double-tap=}
+    };
+
+    // Hold-tap for word/line navigation
+    // Tap = word jump (Option+Arrow), Hold = line jump (Cmd+Arrow)
+    ht_word_l: hold_tap_word_left {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <2>;
+      flavor = "tap-preferred";
       tapping-term-ms = <200>;
-      bindings = <&kp RA(N9)>, <&kp RA(N0)>;  // tap=], double-tap=}
+      bindings = <&kp>, <&kp>;
+    };
+    ht_word_r: hold_tap_word_right {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <2>;
+      flavor = "tap-preferred";
+      tapping-term-ms = <200>;
+      bindings = <&kp>, <&kp>;
+    };
+
+    // Number row tap-dance for LOWER layer
+    // 2: tap = ", double-tap = @
+    td_n2: tap_dance_2 {
+      compatible = "zmk,behavior-tap-dance";
+      #binding-cells = <0>;
+      tapping-term-ms = <250>;
+      bindings = <&kp LS(N2)>, <&kp RA(N2)>;  // " then @
+    };
+    // 7: tap = /, double-tap = |
+    td_n7: tap_dance_7 {
+      compatible = "zmk,behavior-tap-dance";
+      #binding-cells = <0>;
+      tapping-term-ms = <250>;
+      bindings = <&kp LS(N7)>, <&m_pipe>;  // / then |
+    };
+    // 0: tap = =, double-tap = ?
+    td_n0: tap_dance_0 {
+      compatible = "zmk,behavior-tap-dance";
+      #binding-cells = <0>;
+      tapping-term-ms = <250>;
+      bindings = <&kp LS(N0)>, <&kp LS(MINUS)>;  // = then ?
     };
   };
 
@@ -117,19 +184,20 @@
 
     lower_layer {
       display-name = "lower";
-      // Swedish symbols on numbers, arrows on both hands
+      // Swedish symbols with tap-dance on number row
       // ------------------------------------------------------------------------------------------------------------
-      // |       |  F1 |  @  |  F3  |  $   |  F5  |                   |  F6  |  {    |  [    |  ]   |   }   |  DEL  |
-      // |       |     |     |   ^  |      |      |                   | PGUP | HOME  |   ^   |  END |       |       |
+      // |       |  !  | "/@ |  #   |  $   |  %   |                   |  &   |  //|  |  [/{  | ]/}  |  =/? |  DEL  |
+      // |       |     |     |   ^  |      |      |                   | PGUP | ←W/←L |   ^   | W→/L→|       |       |
       // |       |     |  <- |   v  |  ->  |      |                   | PGDN |  <-   |   v   |  ->  |       |       |
-      // |       |     |     |      |      |      |        |  |       |      |       |       |      |   \   |       |
+      // |       |  <  |  >  |      |      |      |        |  |       |      |       |       |      |   \   |       |
       //               |     |      |      |      |        |  |       |      |       |       |      |
+      // Note: U/O have hold-tap: tap=word, hold=line
       bindings = <
-        &trans    &kp F1    &kp RA(N2) &kp F3     &kp RA(N4) &kp F5                    &kp F6    &trans     &td_lbkt   &td_rbkt   &trans     &kp DEL
-        &trans    &trans    &trans     &kp UP     &trans     &trans                    &kp PG_UP &kp LA(LEFT) &kp UP   &kp LA(RIGHT) &trans  &trans
-        &trans    &trans    &kp LEFT   &kp DOWN   &kp RIGHT  &trans                    &kp PG_DN &kp LEFT   &kp DOWN   &kp RIGHT  &trans     &trans
-        &trans    &kp NUBS  &kp LS(NUBS) &trans   &trans     &trans   &trans &trans    &trans    &trans     &trans     &trans     &kp RA(MINUS) &trans
-        &trans    &trans    &trans     &trans     &trans     &trans   &trans &trans    &trans    &trans
+        &trans    &kp LS(N1) &td_n2     &kp LS(N3) &kp RA(N4) &kp LS(N5)                &kp LS(N6) &td_n7     &td_lbkt   &td_rbkt   &td_n0     &kp DEL
+        &trans    &trans     &trans     &kp UP     &trans     &trans                    &kp PG_UP  &ht_word_l LG(LEFT) LA(LEFT)  &kp UP  &ht_word_r LG(RIGHT) LA(RIGHT)  &trans  &trans
+        &trans    &trans     &kp LEFT   &kp DOWN   &kp RIGHT  &trans                    &kp PG_DN  &kp LEFT   &kp DOWN   &kp RIGHT  &trans     &trans
+        &trans    &kp NUBS   &kp LS(NUBS) &trans   &trans     &trans   &trans &trans    &trans     &trans     &trans     &trans     &kp RA(MINUS) &trans
+        &trans    &trans     &trans     &trans     &trans     &trans   &trans &trans    &trans     &trans
       >;
 
       sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
