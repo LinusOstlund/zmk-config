@@ -20,13 +20,13 @@ layout** for symbols to work correctly.
 
 ```text
 ┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
-│SHFT │  1  │  2  │  3  │  4  │  5  │         │  6  │  7  │  8  │  9  │  0  │BSPC │
+│ ESC │  1  │  2  │  3  │  4  │  5  │         │  6  │  7  │  8  │  9  │  0  │BSPC │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│ ESC │  Q  │  W  │  E  │  R  │  T  │         │  Y  │  U  │  I  │  O  │  P  │ ^/~ │
+│ TAB │  Q  │  W  │  E  │  R  │  T  │         │  Y  │  U  │  I  │  O  │  P  │ ^/~ │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│ TAB │  A  │  S  │  D  │  F  │  G  │         │  H  │  J  │  K  │  L  │ +/? │  '  │
+│CAPS │  A  │  S  │  D  │  F  │  G  │         │  H  │  J  │  K  │  L  │ +/? │  '  │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│CAPS │  Z  │  X  │  C  │  V  │  B  │ [ENC]   │  N  │  M  │ ,;  │ .:  │ -_  │SHFT │
+│SHFT │  Z  │  X  │  C  │  V  │  B  │ [ENC]   │  N  │  M  │ ,;  │ .:  │ -_  │SHFT │
 └─────┴─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┴─────┘
             │CTRL │ ALT │ GUI │LW/NV│   SPC    RET   │RAISE│CTRL │ ALT │ GUI │
             └─────┴─────┴─────┴─────┘                └─────┴─────┴─────┴─────┘
@@ -34,7 +34,7 @@ layout** for symbols to work correctly.
 
 **Key differences from standard Sofle:**
 
-- SHIFT top-left, CAPS on row 3 (where SHIFT usually is)
+- ESC top-left, CAPS on home row (where TAB usually is)
 - `^/~` next to P (tap-dance: tap=^, double-tap=~)
 - `+/?` and `'` on home row (where ö/ä would be on full Swedish keyboard)
 - Swedish symbols via combos
