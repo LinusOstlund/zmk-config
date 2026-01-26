@@ -42,14 +42,35 @@ You are assisting with a **ZMK firmware configuration** for a **Keebart Sofle Ch
 
 ## File Structure
 
-```
+```text
 zmk-config/
 ├── config/
-│   └── sofle_choc_pro.keymap   # THE keymap - edit this
-├── boards/                      # Board definitions (don't touch)
+│   └── sofle_choc_pro.keymap   # ← THE keymap - EDIT THIS
+├── boards/arm/sofle_choc_pro/
+│   └── sofle_choc_pro.keymap   # Board default (overridden by config/)
 ├── .github/workflows/
 │   └── build.yml               # GitHub Actions build
 └── README.md                   # User documentation
+```
+
+**IMPORTANT:** The `config/sofle_choc_pro.keymap` overrides the board keymap. Build logs confirm:
+`-- Using keymap file: /tmp/zmk-config/config/sofle_choc_pro.keymap`
+
+## ZMK Studio Warning
+
+This keyboard has ZMK Studio enabled with persistent keymap storage. If keymap changes don't appear after flashing:
+
+1. **ZMK Studio may have stored old keymap settings** that persist across firmware updates
+2. **Solution:** Flash `settings_reset` firmware first to clear stored settings, then flash regular firmware
+
+```bash
+# Flash settings reset (clears stored keymap)
+cp settings_reset-sofle_choc_pro_left.uf2 /Volumes/KEEBART/
+cp settings_reset-sofle_choc_pro_right.uf2 /Volumes/KEEBART\ 1/
+
+# Then flash regular firmware
+cp nice_view_disp-sofle_choc_pro_left-zmk.uf2 /Volumes/KEEBART/
+cp nice_view_disp-sofle_choc_pro_right-zmk.uf2 /Volumes/KEEBART\ 1/
 ```
 
 ## When Making Changes

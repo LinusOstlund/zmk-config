@@ -16,6 +16,7 @@
 #define LOWER 1
 #define RAISE 2
 #define ADJUST 3
+#define NAV 4
 
 / {
 
@@ -102,14 +103,6 @@
       tapping-term-ms = <125>;
       bindings = <&kp LS(N7)>, <&m_pipe>;  // / then |
     };
-    // 0: tap = =, double-tap = ?
-    td_n0: tap_dance_0 {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <125>;
-      bindings = <&kp LS(N0)>, <&kp LS(MINUS)>;  // = then ?
-    };
-
     // Caret/tilde tap-dance for position next to P (replaces Enter)
     // tap = ^, double-tap = ~
     td_caret_tilde: tap_dance_caret_tilde {
@@ -117,6 +110,15 @@
       #binding-cells = <0>;
       tapping-term-ms = <125>;
       bindings = <&kp LS(RBKT)>, <&tilde>;  // ^ then ~
+    };
+
+    // Hold-tap for LOWER key: hold = momentary LOWER, tap = toggle NAV
+    ht_lower_nav: hold_tap_lower_nav {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <2>;
+      flavor = "balanced";
+      tapping-term-ms = <200>;
+      bindings = <&mo>, <&tog>;
     };
   };
 
@@ -174,18 +176,19 @@
       display-name = "default";
       // Swedish-optimized layout
       // ------------------------------------------------------------------------------------------------------------
-      // |   §   |  1  |  2  |  3   |  4   |  5   |                   |  6   |  7    |  8    |  9   |   0   | BKSPC |
+      // | SHIFT |  1  |  2  |  3   |  4   |  5   |                   |  6   |  7    |  8    |  9   |   0   | BKSPC |
       // |  ESC  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   | ^/~   |
       // |  TAB  |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |  +/?  |   '   |
-      // | SHIFT |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  | PLAY  |  N   |  M    |  ,;   |  .:  |  -_   | SHIFT |
-      //               | GUI | ALT  | CTRL | LOWER|  SPACE |  | ENTER | RAISE| CTRL  | ALT   | GUI  |
+      // | CAPS  |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  | PLAY  |  N   |  M    |  ,;   |  .:  |  -_   | SHIFT |
+      //               | CTRL| ALT  | GUI  |LWR/NV|  SPACE |  | ENTER | RAISE| CTRL  | ALT   | GUI  |
+      // LWR/NV: hold = LOWER layer, tap = toggle NAV mode (IJKL arrows)
       // Combos: P+^=å, L++=ö, ++'=ä, S+P=Spotlight
       bindings = <
-        &kp GRAVE &kp N1 &kp N2   &kp N3   &kp N4    &kp N5                           &kp N6 &kp N7    &kp N8    &kp N9   &kp N0   &kp BSPC
+        &kp LSHFT &kp N1 &kp N2   &kp N3   &kp N4    &kp N5                           &kp N6 &kp N7    &kp N8    &kp N9   &kp N0   &kp BSPC
         &kp ESC   &kp Q  &kp W    &kp E    &kp R     &kp T                            &kp Y  &kp U     &kp I     &kp O    &kp P    &td_caret_tilde
         &kp TAB   &kp A  &kp S    &kp D    &kp F     &kp G                            &kp H  &kp J     &kp K     &kp L    &kp MINUS &kp BSLH
-        &kp LSHFT &kp Z  &kp X    &kp C    &kp V     &kp B   &kp C_MUTE &kp C_PLAY    &kp N  &kp M     &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
-        &kp LGUI &kp LALT &kp LCTRL &mo LOWER  &kp SPACE    &kp RET    &mo RAISE  &kp RCTRL &kp RALT  &kp RGUI
+        &kp CLCK  &kp Z  &kp X    &kp C    &kp V     &kp B   &kp C_MUTE &kp C_PLAY    &kp N  &kp M     &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
+        &kp LCTRL &kp LALT &kp LGUI &ht_lower_nav LOWER NAV  &kp SPACE    &kp RET    &mo RAISE  &kp RCTRL &kp RALT  &kp RGUI
       >;
 
       sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
@@ -195,14 +198,14 @@
       display-name = "lower";
       // Swedish symbols with tap-dance on number row
       // ------------------------------------------------------------------------------------------------------------
-      // |       |  !  | "/@ |  #   |  $   |  %   |                   |  &   |   |   |  [/{  | ]/}  |  =/? |  DEL  |
+      // |       |  !  | "/@ |  #   |  $   |  %   |                   |  &   |   |   |  [/{  | ]/}  |   ?  |  DEL  |
       // |       |     |     |   ^  |      |      |                   | PGUP | ←W/←L |   ^   | W→/L→|       |       |
       // |       |     |  <- |   v  |  ->  |      |                   | PGDN |  <-   |   v   |  ->  |   ´   |   *   |
       // |       |  <  |  >  |      |      |      |        |  |       |      |       |       |      |   \   |       |
       //               |     |      |      |      |        |  |       |      |       |       |      |
       // Note: U/O have hold-tap: tap=word, hold=line
       bindings = <
-        &trans    &kp LS(N1) &td_n2     &kp LS(N3) &kp RA(N4) &kp LS(N5)                &kp LS(N6) &m_pipe    &td_lbkt   &td_rbkt   &td_n0     &kp DEL
+        &trans    &kp LS(N1) &td_n2     &kp LS(N3) &kp RA(N4) &kp LS(N5)                &kp LS(N6) &m_pipe    &td_lbkt   &td_rbkt   &kp LS(MINUS)  &kp DEL
         &trans    &trans     &trans     &kp UP     &trans     &trans                    &kp PG_UP  &ht_word_l LG(LEFT) LA(LEFT)  &kp UP  &ht_word_r LG(RIGHT) LA(RIGHT)  &trans  &trans
         &trans    &trans     &kp LEFT   &kp DOWN   &kp RIGHT  &trans                    &kp PG_DN  &kp LEFT   &kp DOWN   &kp RIGHT  &kp EQUAL  &kp LS(BSLH)
         &trans    &kp NUBS   &kp LS(NUBS) &trans   &trans     &trans   &trans &trans    &trans     &trans     &trans     &trans     &kp RA(MINUS) &trans
@@ -247,6 +250,27 @@
         &none             &rgb_ug RGB_TOG &rgb_ug RGB_EFF &rgb_ug RGB_HUI &rgb_ug RGB_SAI &rgb_ug RGB_BRI  &rgb_ug RGB_TOG &none  &none &none &none &none &none &none
         &none           &none           &none           &none            &none           &none  &none &none &none &none
       >;
+    };
+
+    nav_layer {
+      display-name = "nav";
+      // Navigation lock layer - tap LOWER to toggle, tap again or ESC to exit
+      // Only IJKL arrows active, everything else passes through
+      // ------------------------------------------------------------------------------------------------------------
+      // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
+      // |  EXIT |     |     |      |      |      |                   |      |       |   ↑   |      |       |       |
+      // |       |     |     |      |      |      |                   |      |   ←   |   ↓   |  →   |       |       |
+      // |       |     |     |      |      |      |        |  |       |      |       |       |      |       |       |
+      //               |     |      |      | EXIT |        |  |       |      |       |       |      |
+      bindings = <
+        &trans    &trans &trans &trans &trans &trans                       &trans &trans   &trans   &trans    &trans &trans
+        &tog NAV  &trans &trans &trans &trans &trans                       &trans &trans   &kp UP   &trans    &trans &trans
+        &trans    &trans &trans &trans &trans &trans                       &trans &kp LEFT &kp DOWN &kp RIGHT &trans &trans
+        &trans    &trans &trans &trans &trans &trans &trans &trans         &trans &trans   &trans   &trans    &trans &trans
+                         &trans &trans &trans &tog NAV &trans &trans &trans &trans &trans &trans
+      >;
+
+      sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
     };
   };
 };

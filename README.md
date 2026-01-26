@@ -20,25 +20,26 @@ layout** for symbols to work correctly.
 
 ```text
 ┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
-│  §  │  1  │  2  │  3  │  4  │  5  │         │  6  │  7  │  8  │  9  │  0  │BSPC │
+│SHFT │  1  │  2  │  3  │  4  │  5  │         │  6  │  7  │  8  │  9  │  0  │BSPC │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │ ESC │  Q  │  W  │  E  │  R  │  T  │         │  Y  │  U  │  I  │  O  │  P  │ ^/~ │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │ TAB │  A  │  S  │  D  │  F  │  G  │         │  H  │  J  │  K  │  L  │ +/? │  '  │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│SHFT │  Z  │  X  │  C  │  V  │  B  │ [ENC]   │  N  │  M  │ ,;  │ .:  │ -_  │SHFT │
+│CAPS │  Z  │  X  │  C  │  V  │  B  │ [ENC]   │  N  │  M  │ ,;  │ .:  │ -_  │SHFT │
 └─────┴─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┴─────┘
-            │ GUI │ ALT │CTRL │LOWER│   SPC    RET   │RAISE│CTRL │ ALT │ GUI │
+            │CTRL │ ALT │ GUI │LW/NV│   SPC    RET   │RAISE│CTRL │ ALT │ GUI │
             └─────┴─────┴─────┴─────┘                └─────┴─────┴─────┴─────┘
 ```
 
 **Key differences from standard Sofle:**
 
-- BSPC next to 0 (top right)
+- SHIFT top-left, CAPS on row 3 (where SHIFT usually is)
 - `^/~` next to P (tap-dance: tap=^, double-tap=~)
 - `+/?` and `'` on home row (where ö/ä would be on full Swedish keyboard)
 - Swedish symbols via combos
 - Left thumb = Space, Right thumb = Enter (only Enter location)
+- **LW/NV key**: hold = LOWER layer, tap = toggle NAV mode
 
 ### Combos
 
@@ -51,13 +52,13 @@ Press keys **simultaneously** (within 50ms) on BASE layer:
 | +/? + '      | ä           | Roll pinky further (pos 34+35) |
 | S + P        | Spotlight   | Cmd+Space (pos 26+22) |
 
-### LOWER Layer (Left Thumb)
+### LOWER Layer (Hold LW/NV)
 
-Hold LOWER for navigation and symbols:
+**Hold** LW/NV for navigation and symbols:
 
 ```text
 ┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
-│     │  !  │ "/@ │  #  │  $  │  %  │         │  &  │  |  │ [/{ │ ]/} │ =/? │ DEL │
+│     │  !  │ "/@ │  #  │  $  │  %  │         │  &  │  |  │ [/{ │ ]/} │  ?  │ DEL │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │     │     │     │  ↑  │     │     │         │PGUP │ ←W  │  ↑  │  W→ │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
@@ -66,6 +67,26 @@ Hold LOWER for navigation and symbols:
 │     │  <  │  >  │     │     │     │         │     │     │     │     │  \  │     │
 └─────┴─────┴─────┴─────┴─────┴─────┘         └─────┴─────┴─────┴─────┴─────┴─────┘
 ```
+
+### NAV Layer (Tap LW/NV)
+
+**Tap** LW/NV to toggle navigation lock mode. Tap again or press ESC to exit.
+
+```text
+┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
+│     │     │     │     │     │     │         │     │     │     │     │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+│EXIT │     │     │     │     │     │         │     │     │  ↑  │     │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │     │     │     │     │         │     │  ←  │  ↓  │  →  │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┼ [ENC]   ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │     │     │     │     │         │     │     │     │     │     │     │
+└─────┴─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┴─────┘
+            │     │     │     │EXIT │                │     │     │     │     │
+            └─────┴─────┴─────┴─────┘                └─────┴─────┴─────┴─────┘
+```
+
+Only IJKL arrows are active; everything else passes through to BASE layer.
 
 **Special behaviors:**
 
@@ -207,6 +228,14 @@ gh run download <run-id> --repo LinusOstlund/zmk-config --dir firmware
 
 ### Troubleshooting
 
+**Keymap changes not appearing after flash:**
+
+ZMK Studio is enabled with persistent storage. If you've ever modified the keymap through ZMK Studio, those changes persist across firmware updates.
+
+1. Flash `settings_reset-sofle_choc_pro_left.uf2` to left half
+2. Flash `settings_reset-sofle_choc_pro_right.uf2` to right half
+3. Re-flash regular firmware to both halves
+
 **Halves won't pair after flash:**
 
 1. Flash `settings_reset-sofle_choc_pro_*.uf2` to both halves
@@ -222,13 +251,16 @@ gh run download <run-id> --repo LinusOstlund/zmk-config --dir firmware
 ```text
 zmk-config/
 ├── config/
-│   ├── sofle_choc_pro.keymap    # Main keymap file
+│   ├── sofle_choc_pro.keymap    # ← EDIT THIS (overrides board default)
 │   └── west.yml                  # West manifest
-├── boards/                       # Board definitions
+├── boards/arm/sofle_choc_pro/
+│   └── sofle_choc_pro.keymap    # Board default keymap
 ├── .github/workflows/
 │   └── build.yml                 # GitHub Actions build
 └── README.md
 ```
+
+**Note:** The `config/sofle_choc_pro.keymap` overrides the board keymap when present.
 
 ## Custom Behaviors
 
@@ -239,7 +271,7 @@ zmk-config/
 | 8 position  | `[`   | `{`        |
 | 9 position  | `]`   | `}`        |
 
-Tapping term: 200ms
+Tapping term: 125ms (175ms for td_n2)
 
 ### Macros
 
