@@ -5,10 +5,12 @@
 */
 
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/rgb.h>
 #include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/pointing.h>
+#include <dt-bindings/zmk/rgb.h>
+
 // Swedish characters: just send the US key positions that map to åäö on Swedish OS
 // å = LBKT, ä = SQT, ö = SEMI
 
@@ -20,307 +22,367 @@
 #define SWE 5
 
 / {
+    // Macros for Swedish symbols
 
-  // Macros for Swedish symbols
-  macros {
-    tilde: tilde_macro {
-      compatible = "zmk,behavior-macro";
-      #binding-cells = <0>;
-      bindings = <&kp RA(RBKT) &kp SPACE>;  // AltGr+¨ then space = ~
-    };
-    // Bracket macros for tap-dance (explicit for reliability)
-    m_lbkt: macro_left_bracket {
-      compatible = "zmk,behavior-macro";
-      #binding-cells = <0>;
-      bindings = <&kp RA(N8)>;  // [
-    };
-    m_lbrc: macro_left_brace {
-      compatible = "zmk,behavior-macro";
-      #binding-cells = <0>;
-      bindings = <&kp LS(RA(N8))>;  // { = Option+Shift+8 on macOS Swedish
-    };
-    m_rbkt: macro_right_bracket {
-      compatible = "zmk,behavior-macro";
-      #binding-cells = <0>;
-      bindings = <&kp RA(N9)>;  // ]
-    };
-    m_rbrc: macro_right_brace {
-      compatible = "zmk,behavior-macro";
-      #binding-cells = <0>;
-      bindings = <&kp LS(RA(N9))>;  // } = Option+Shift+9 on macOS Swedish
-    };
-    // Pipe macro - Option+7 on macOS Swedish
-    m_pipe: macro_pipe {
-      compatible = "zmk,behavior-macro";
-      #binding-cells = <0>;
-      bindings = <&kp RA(N7)>;  // | = Option+7 on macOS Swedish
-    };
-  };
+    macros {
+        tilde: tilde_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RA(RBKT) &kp SPACE>;  // AltGr+¨ then space = ~
+        };
 
-  behaviors {
-    // Tap-dance for brackets: tap=[], double-tap={}
-    td_lbkt: tap_dance_left_bracket {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <125>;
-      bindings = <&m_lbkt>, <&m_lbrc>;  // tap=[, double-tap={
-    };
-    td_rbkt: tap_dance_right_bracket {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <125>;
-      bindings = <&m_rbkt>, <&m_rbrc>;  // tap=], double-tap=}
+        // Bracket macros for tap-dance (explicit for reliability)
+
+        m_lbkt: macro_left_bracket {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RA(N8)>;  // [
+        };
+
+        m_lbrc: macro_left_brace {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(RA(N8))>;  // { = Option+Shift+8 on macOS Swedish
+        };
+
+        m_rbkt: macro_right_bracket {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RA(N9)>;  // ]
+        };
+
+        m_rbrc: macro_right_brace {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(RA(N9))>;  // } = Option+Shift+9 on macOS Swedish
+        };
+
+        // Pipe macro - Option+7 on macOS Swedish
+
+        m_pipe: macro_pipe {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RA(N7)>;  // | = Option+7 on macOS Swedish
+        };
     };
 
-    // Hold-tap for word/line navigation
-    // Tap = word jump (Option+Arrow), Hold = line jump (Cmd+Arrow)
-    ht_word_l: hold_tap_word_left {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "tap-preferred";
-      tapping-term-ms = <125>;
-      bindings = <&kp>, <&kp>;
-    };
-    ht_word_r: hold_tap_word_right {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "tap-preferred";
-      tapping-term-ms = <125>;
-      bindings = <&kp>, <&kp>;
-    };
+    behaviors {
+        // Tap-dance for brackets: tap=[], double-tap={}
 
-    // Number row tap-dance for LOWER layer
-    // 2: tap = ", double-tap = @
-    td_n2: tap_dance_2 {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <175>;
-      bindings = <&kp LS(N2)>, <&kp RA(N2)>;  // " then @
-    };
-    // 7: tap = /, double-tap = |
-    td_n7: tap_dance_7 {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <125>;
-      bindings = <&kp LS(N7)>, <&m_pipe>;  // / then |
-    };
-    // Caret/tilde tap-dance for position next to P (replaces Enter)
-    // tap = ^, double-tap = ~
-    td_caret_tilde: tap_dance_caret_tilde {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <155>;  // Right side: 155ms
-      bindings = <&kp LS(RBKT)>, <&tilde>;  // ^ then ~
-    };
+        td_lbkt: tap_dance_left_bracket {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <125>;
+            bindings = <&m_lbkt>, <&m_lbrc>;
 
-    // Apostrophe/asterisk tap-dance for LOWER layer
-    // tap = ', double-tap = *
-    td_apos_star: tap_dance_apos_star {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <155>;  // Right side: 155ms
-      bindings = <&kp BSLH>, <&kp LS(BSLH)>;  // ' then *
-    };
+            // tap=[, double-tap={
+        };
 
-    // Hold-tap for LOWER key: hold = momentary LOWER, tap = toggle NAV
-    ht_lower_nav: hold_tap_lower_nav {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "balanced";
-      tapping-term-ms = <200>;
-      bindings = <&mo>, <&tog>;
-    };
+        td_rbkt: tap_dance_right_bracket {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <125>;
+            bindings = <&m_rbkt>, <&m_rbrc>;
 
-    // Hold-tap for RET key: tap = toggle SWE, hold = RET
-    ht_ret_swe: hold_tap_ret_swe {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "balanced";
-      tapping-term-ms = <200>;
-      bindings = <&kp>, <&tog>;
-    };
+            // tap=], double-tap=}
+        };
 
-    // Hold-tap for right thumb modifiers: tap = arrow, hold = modifier
-    ht_ctrl_left: hold_tap_ctrl_left {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "balanced";
-      tapping-term-ms = <200>;
-      bindings = <&kp>, <&kp>;
-    };
-  };
+        // Hold-tap for word/line navigation
+        // Tap = word jump (Option+Arrow), Hold = line jump (Cmd+Arrow)
 
-  // Swedish character combos (å ä ö) - adjacent key pairs
-  // P=22, ^/~=23, L=33, +/?=34, '=35
-  combos {
-    compatible = "zmk,combos";
+        ht_word_l: hold_tap_word_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <125>;
+            bindings = <&kp>, <&kp>;
+        };
 
-    // å: P + ^/~ pressed together
-    combo_ao {
-      timeout-ms = <50>;
-      key-positions = <22 23>;
-      bindings = <&kp LBKT>;
-      layers = <BASE>;
-    };
+        ht_word_r: hold_tap_word_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <125>;
+            bindings = <&kp>, <&kp>;
+        };
 
-    // ö: L + +/? pressed together
-    combo_oe {
-      timeout-ms = <50>;
-      key-positions = <33 34>;
-      bindings = <&kp SEMI>;
-      layers = <BASE>;
-    };
+        // Number row tap-dance for LOWER layer
+        // 2: tap = ", double-tap = @
 
-    // ä: +/? + ' pressed together
-    combo_ae {
-      timeout-ms = <50>;
-      key-positions = <34 35>;
-      bindings = <&kp SQT>;
-      layers = <BASE>;
-    };
+        td_n2: tap_dance_2 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <175>;
+            bindings = <&kp LS(N2)>, <&kp RA(N2)>;
 
-    // Spotlight: S + P pressed together
-    combo_spotlight {
-      timeout-ms = <50>;
-      key-positions = <26 22>;  // S=26, P=22
-      bindings = <&kp LG(SPACE)>;
-      layers = <BASE>;
-    };
-  };
+            // " then @
+        };
 
-  // Activate ADJUST layer by pressing raise and lower
-  conditional_layers {
-    compatible = "zmk,conditional-layers";
-    adjust_layer {
-      if-layers = <LOWER RAISE>;
-      then-layer = <ADJUST>;
-    };
-  };
+        // 7: tap = /, double-tap = |
 
-  keymap {
-    compatible = "zmk,keymap";
+        td_n7: tap_dance_7 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <125>;
+            bindings = <&kp LS(N7)>, <&m_pipe>;
 
-    default_layer {
-      display-name = "default";
-      // Swedish-optimized layout
-      // ------------------------------------------------------------------------------------------------------------
-      // |  ESC  |  1  |  2  |  3   |  4   |  5   |                   |  6   |  7    |  8    |  9   |   0   | BKSPC |
-      // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   | ^/~   |
-      // | CAPS  |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |  +/?  |   '   |
-      // | SHIFT |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  | PLAY  |  N   |  M    |  ,;   |  .:  |  -_   | SHIFT |
-      //               | CTRL| ALT  | GUI  |LWR/NV| SPC/CMD|  |RET/SWE| RAISE| ←/CTL | ↓/ALT | →/GUI|
-      // LWR/NV: hold = LOWER, tap = toggle NAV | SPC/CMD: hold = Cmd, tap = Space
-      // RET/SWE: tap = toggle SWE, hold = RET | Right mods: tap = arrow, hold = mod
-      // Combos: P+^=å, L++=ö, ++'=ä, S+P=Spotlight
-      bindings = <
-        &kp ESC   &kp N1 &kp N2   &kp N3   &kp N4    &kp N5                           &kp N6 &kp N7    &kp N8    &kp N9   &kp N0   &kp BSPC
-        &kp TAB   &kp Q  &kp W    &kp E    &kp R     &kp T                            &kp Y  &kp U     &kp I     &kp O    &kp P    &td_caret_tilde
-        &kp CLCK  &kp A  &kp S    &kp D    &kp F     &kp G                            &kp H  &kp J     &kp K     &kp L    &kp MINUS &kp BSLH
-        &kp LSHFT &kp Z  &kp X    &kp C    &kp V     &kp B   &kp C_MUTE &kp C_PLAY    &kp N  &kp M     &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
-        &kp LCTRL &kp LALT &kp LGUI &ht_lower_nav LOWER NAV  &mt LGUI SPACE    &ht_ret_swe RET SWE    &mo RAISE  &ht_ctrl_left RCTRL LEFT &ht_ctrl_left RALT DOWN  &ht_ctrl_left RGUI RIGHT
-      >;
+            // / then |
+        };
 
-      sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
+        // Caret/tilde tap-dance for position next to P (replaces Enter)
+        // tap = ^, double-tap = ~
+
+        td_caret_tilde: tap_dance_caret_tilde {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <155>;  // Right side: 155ms
+            bindings = <&kp LS(RBKT)>, <&tilde>;
+
+            // ^ then ~
+        };
+
+        // Apostrophe/asterisk tap-dance for LOWER layer
+        // tap = ', double-tap = *
+
+        td_apos_star: tap_dance_apos_star {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <155>;  // Right side: 155ms
+            bindings = <&kp BSLH>, <&kp LS(BSLH)>;
+
+            // ' then *
+        };
+
+        // Hold-tap for LOWER key: hold = momentary LOWER, tap = toggle NAV
+
+        ht_lower_nav: hold_tap_lower_nav {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&tog>;
+        };
+
+        // Hold-tap for PLAY/Fn key: tap = toggle SWE, hold = GLOBE (macOS fn)
+
+        ht_fn_swe: hold_tap_fn_swe {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            bindings = <&kp>, <&tog>;
+        };
+
+        // Hold-tap for RAISE key: tap = LEFT arrow, hold = mo RAISE
+
+        ht_raise_left: hold_tap_raise_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&kp>;
+        };
+
+        // Hold-tap for right thumb modifiers: tap = arrow, hold = modifier
+
+        ht_ctrl_left: hold_tap_ctrl_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            bindings = <&kp>, <&kp>;
+        };
     };
 
-    lower_layer {
-      display-name = "lower";
-      // Swedish symbols with tap-dance on number row
-      // ------------------------------------------------------------------------------------------------------------
-      // |       |  !  | "/@ |  #   |  $   |  %   |                   |  &   |   |   |  [/{  | ]/}  |   ?  |  DEL  |
-      // |       |     |     |   ^  |      |      |                   | PGUP | ←W/←L |   ^   | W→/L→|       |       |
-      // |       |     |  <- |   v  |  ->  |      |                   | PGDN |  <-   |   v   |  ->  |   ´   |   *   |
-      // |       |  <  |  >  |      |      |      |        |  |       |      |       |       |      |   \   |       |
-      //               |     |      |      |      |        |  |       |      |       |       |      |
-      // Note: U/O have hold-tap: tap=word, hold=line
-      bindings = <
-        &trans    &kp LS(N1) &td_n2     &kp LS(N3) &kp RA(N4) &kp LS(N5)                &kp LS(N6) &m_pipe    &td_lbkt   &td_rbkt   &kp LS(MINUS)  &kp DEL
-        &trans    &trans     &trans     &kp UP     &trans     &trans                    &kp PG_UP  &ht_word_l LG(LEFT) LA(LEFT)  &kp UP  &ht_word_r LG(RIGHT) LA(RIGHT)  &trans  &trans
-        &trans    &trans     &kp LEFT   &kp DOWN   &kp RIGHT  &trans                    &kp PG_DN  &kp LEFT   &kp DOWN   &kp RIGHT  &kp EQUAL  &td_apos_star
-        &trans    &kp NUBS   &kp LS(NUBS) &trans   &trans     &trans   &trans &trans    &trans     &trans     &trans     &trans     &kp RA(MINUS) &trans
-        &trans    &trans     &trans     &trans     &trans     &trans   &trans &trans    &trans     &trans
-      >;
+    // Swedish character combos (å ä ö) - adjacent key pairs
+    // P=22, ^/~=23, L=33, +/?=34, '=35
 
-      sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
+    combos {
+        compatible = "zmk,combos";
+
+        // å: P + ^/~ pressed together
+
+        combo_ao {
+            timeout-ms = <50>;
+            key-positions = <22 23>;
+            bindings = <&kp LBKT>;
+            layers = <BASE>;
+        };
+
+        // ö: L + +/? pressed together
+
+        combo_oe {
+            timeout-ms = <50>;
+            key-positions = <33 34>;
+            bindings = <&kp SEMI>;
+            layers = <BASE>;
+        };
+
+        // ä: +/? + ' pressed together
+
+        combo_ae {
+            timeout-ms = <50>;
+            key-positions = <34 35>;
+            bindings = <&kp SQT>;
+            layers = <BASE>;
+        };
+
+        // Spotlight: S + P pressed together
+
+        combo_spotlight {
+            timeout-ms = <50>;
+            key-positions = <42 43>;  // S=26, P=22
+            bindings = <&kp LG(SPACE)>;
+            layers = <BASE>;
+        };
     };
 
-    raise_layer {
-      display-name = "raise";
-      // BT controls, tilde, DEL
-      // ------------------------------------------------------------------------------------------------------------
-      // | BTCLR | BT1  | BT2  |  BT3  |  BT4  |  BT5 |                |      |      |       |      |       |       |
-      // |       |      |      |       |       |      |                |      |      |       |      |       |       |
-      // |       |      |      |       |       |      |                |      |      |       |      |  DEL  |   ~   |
-      // |       |      | CUT  | COPY  | PASTE |      |      |  |      |      |      |       |      |       |       |
-      //                |      |       |       |      |      |  |      |      |      |       |      |
-      bindings = <
-        &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4                  &trans    &trans    &trans   &trans    &trans  &trans
-        &trans     &trans       &trans       &trans       &trans       &trans                        &trans    &trans    &trans   &trans    &trans  &trans
-        &trans     &trans       &trans       &trans       &trans       &trans                        &trans    &trans    &trans   &trans    &kp DEL &tilde
-        &trans     &trans       &kp K_CUT    &kp K_COPY   &kp K_PASTE  &studio_unlock        &trans  &trans  &trans    &trans    &trans   &trans    &trans  &trans
-        &trans       &trans       &trans       &trans        &trans  &trans  &trans    &trans    &trans   &trans
-      >;
+    // Activate ADJUST layer by pressing raise and lower
 
-      sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        adjust_layer {
+            if-layers = <LOWER RAISE>;
+            then-layer = <ADJUST>;
+        };
     };
 
-    adjust_layer {
-      // ----------------------------------------------------------------------------------------------------------------------------
-      // | BTCLR  |  BT1    |  BT2    |   BT3   |   BT4   |   BT5   |                  |      |      |       |      |       |       |
-      // | EXTPWR | RGB_HUD | RGB_HUI | RGB_SAD | RGB_SAI | RGB_EFF |                  |      |      |       |      |       |       |
-      // |        | RGB_BRD | RGB_BRI |         |         |         |                  |      |      |       |      |       |       |
-      // |        | RGB_TOG | RGB_EFF | RGB_HUI | RGB_SAI | RGB_BRI | RGB_TOG | |      |      |      |       |      |       |       |
-      //                    |         |         |         |         |         | |      |      |      |       |      |
-      display-name = "adjust";
-      bindings = <
-        &bt BT_CLR        &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4                            &none &none &none &none &none &none
-        &ext_power EP_TOG &rgb_ug RGB_HUD &rgb_ug RGB_HUI &rgb_ug RGB_SAD &rgb_ug RGB_SAI &rgb_ug RGB_EFF                         &none &none &none &none &none &none
-        &none             &rgb_ug RGB_BRD &rgb_ug RGB_BRI &none           &none           &none                                   &none &none &none &none &none &none
-        &none             &rgb_ug RGB_TOG &rgb_ug RGB_EFF &rgb_ug RGB_HUI &rgb_ug RGB_SAI &rgb_ug RGB_BRI  &rgb_ug RGB_TOG &none  &none &none &none &none &none &none
-        &none           &none           &none           &none            &none           &none  &none &none &none &none
-      >;
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            display-name = "default";
+
+            // Swedish-optimized layout
+            // ------------------------------------------------------------------------------------------------------------
+            // |  ESC  |  1  |  2  |  3   |  4   |  5   |                   |  6   |  7    |  8    |  9   |   0   | BKSPC |
+            // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   | ^/~   |
+            // | CAPS  |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |  +/?  |   '   |
+            // | SHIFT |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  |FN/SWE |  N   |  M    |  ,;   |  .:  |  -_   | SHIFT |
+            //               | CTRL| ALT  | GUI  |LWR/NV| SPC/CMD|  | ENTER |RSE/← | ←/CTL | ↓/ALT | →/GUI|
+            // LWR/NV: hold = LOWER, tap = toggle NAV | SPC/CMD: hold = Cmd, tap = Space
+            // FN/SWE: tap = toggle SWE, hold = GLOBE (macOS fn) | RSE/←: tap = LEFT, hold = RAISE
+            // Combos: P+^=å, L++=ö, ++'=ä, S+P=Spotlight
+
+            bindings = <
+&kp ESC    &kp N1  &kp N2     &kp N3    &kp N4    &kp N5                                                           &kp N6                     &kp N7                          &kp N8                       &kp N9                    &kp N0     &kp BSPC
+&kp TAB    &kp Q   &kp W      &kp E     &kp R     &kp T                                                            &kp Y                      &kp U                           &kp I                        &kp O                     &kp P      &td_caret_tilde
+&kp CLCK   &kp A   &kp S      &kp D     &kp F     &kp G                                                            &kp H                      &kp J                           &kp K                        &kp L                     &kp PLUS   &kp ASTERISK
+&kp LSHFT  &kp Z   &kp X      &kp C     &kp V     &kp B                    &kp C_MUTE        &ht_fn_swe GLOBE SWE  &kp N                      &kp M                           &kp COMMA                    &kp DOT                   &kp MINUS  &kp EQUAL
+                   &kp LCTRL  &kp LALT  &kp LGUI  &ht_lower_nav LOWER NAV  &mt LGUI SPACE    &mt CAPSLOCK RET      &ht_raise_left RAISE LEFT  &ht_ctrl_left RCTRL DOWN_ARROW  &ht_ctrl_left RALT UP_ARROW  &ht_ctrl_left RGUI RIGHT
+            >;
+
+            sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
+        };
+
+        lower_layer {
+            display-name = "lower";
+
+            // Swedish symbols with tap-dance on number row
+            // ------------------------------------------------------------------------------------------------------------
+            // |       |  !  | "/@ |  #   |  $   |  %   |                   |  &   |   |   |  [/{  | ]/}  |   ?  |  DEL  |
+            // |       |     |     |   ^  |      |      |                   | PGUP | ←W/←L |   ^   | W→/L→|       |       |
+            // |       |     |  <- |   v  |  ->  |      |                   | PGDN |  <-   |   v   |  ->  |   ´   |   *   |
+            // |       |  <  |  >  |      |      |      |        |  |       |      |       |       |      |   \   |       |
+            //               |     |      |      |      |        |  |       |      |       |       |      |
+            // Note: U/O have hold-tap: tap=word, hold=line
+
+            bindings = <
+&trans  &kp LS(N1)  &td_n2        &kp LS(N3)  &kp RA(N4)  &kp LS(N5)                    &kp LS(N6)  &m_pipe                         &td_lbkt  &td_rbkt                          &kp LS(MINUS)  &kp DEL
+&trans  &trans      &trans        &kp UP      &trans      &trans                        &trans      &ht_word_l (LG(LEFT)) LA(LEFT)  &none     &ht_word_r (LG(RIGHT)) LA(RIGHT)  &trans         &trans
+&trans  &trans      &kp LEFT      &kp DOWN    &kp RIGHT   &trans                        &kp LEFT    &kp DOWN_ARROW                  &kp DOWN  &kp RIGHT                         &kp EQUAL      &td_apos_star
+&trans  &kp NUBS    &kp LS(NUBS)  &trans      &trans      &trans      &trans    &trans  &trans      &trans                          &trans    &trans                            &kp RA(MINUS)  &trans
+                    &trans        &trans      &trans      &trans      &trans    &trans  &trans      &trans                          &trans    &trans
+            >;
+
+            sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
+        };
+
+        raise_layer {
+            display-name = "raise";
+
+            // BT controls, tilde, DEL
+            // ------------------------------------------------------------------------------------------------------------
+            // | BTCLR | BT1  | BT2  |  BT3  |  BT4  |  BT5 |                |      |      |       |      |       |       |
+            // |       |      |      |       |       |      |                |      |      |       |      |       |       |
+            // |       |      |      |       |       |      |                |      |      |       |      |  DEL  |   ~   |
+            // |       |      | CUT  | COPY  | PASTE |      |      |  |      |      |      |       |      |       |       |
+            //                |      |       |       |      |      |  |      |      |      |       |      |
+
+            bindings = <
+&bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                      &trans  &trans  &trans  &trans  &trans   &trans
+&trans      &trans        &trans        &trans        &trans        &trans                            &trans  &trans  &trans  &trans  &trans   &trans
+&trans      &trans        &trans        &trans        &trans        &trans                            &trans  &trans  &trans  &trans  &kp DEL  &tilde
+&trans      &trans        &kp K_CUT     &kp K_COPY    &kp K_PASTE   &studio_unlock  &trans    &trans  &trans  &trans  &trans  &trans  &trans   &trans
+                          &trans        &trans        &trans        &trans          &trans    &trans  &trans  &trans  &trans  &trans
+            >;
+
+            sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
+        };
+
+        adjust_layer {
+            // ----------------------------------------------------------------------------------------------------------------------------
+            // | BTCLR  |  BT1    |  BT2    |   BT3   |   BT4   |   BT5   |                  |      |      |       |      |       |       |
+            // | EXTPWR | RGB_HUD | RGB_HUI | RGB_SAD | RGB_SAI | RGB_EFF |                  |      |      |       |      |       |       |
+            // |        | RGB_BRD | RGB_BRI |         |         |         |                  |      |      |       |      |       |       |
+            // |        | RGB_TOG | RGB_EFF | RGB_HUI | RGB_SAI | RGB_BRI | RGB_TOG | |      |      |      |       |      |       |       |
+            //                    |         |         |         |         |         | |      |      |      |       |      |
+
+            display-name = "adjust";
+            bindings = <
+&bt BT_CLR         &bt BT_SEL 0     &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3     &bt BT_SEL 4                               &none  &none  &none  &none  &none  &none
+&ext_power EP_TOG  &rgb_ug RGB_HUD  &rgb_ug RGB_HUI  &rgb_ug RGB_SAD  &rgb_ug RGB_SAI  &rgb_ug RGB_EFF                            &none  &none  &none  &none  &none  &none
+&none              &rgb_ug RGB_BRD  &rgb_ug RGB_BRI  &none            &none            &none                                      &none  &none  &none  &none  &none  &none
+&none              &rgb_ug RGB_TOG  &rgb_ug RGB_EFF  &rgb_ug RGB_HUI  &rgb_ug RGB_SAI  &rgb_ug RGB_BRI  &rgb_ug RGB_TOG    &none  &none  &none  &none  &none  &none  &none
+                                    &none            &none            &none            &none            &none              &none  &none  &none  &none  &none
+            >;
+        };
+
+        nav_layer {
+            display-name = "nav";
+
+            // Navigation lock layer - tap LOWER to toggle, tap again or ESC to exit
+            // Vim-style HJKL arrows, everything else passes through
+            // ------------------------------------------------------------------------------------------------------------
+            // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
+            // |  EXIT |     |     |      |      |      |                   |      |       |       |      |       |       |
+            // |       |     |     |      |      |      |                   |   ←  |   ↓   |   ↑   |  →   |       |       |
+            // |       |     |     |      |      |      |        |  |       |      |       |       |      |       |       |
+            //               |     |      |      | EXIT |        |  |       |      |       |       |      |
+
+            bindings = <
+&tog 4  &trans  &trans  &trans  &trans  &trans                      &trans          &trans          &trans        &trans           &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                      &kp HOME        &kp PAGE_DOWN   &kp PAGE_UP   &kp END          &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                      &kp LEFT        &kp DOWN        &kp UP        &kp RIGHT        &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans    &trans  &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &trans  &trans
+                &trans  &trans  &trans  &tog NAV  &trans    &trans  &trans          &trans          &trans        &trans
+            >;
+
+            sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
+        };
+
+        swe_layer {
+            display-name = "swe";
+
+            // Swedish character layer - tap FN/SWE to toggle, tap again or ESC to exit
+            // å on position 23 (next to P), ö on position 34, ä on position 35
+            // ------------------------------------------------------------------------------------------------------------
+            // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
+            // |  EXIT |     |     |      |      |      |                   |      |       |       |      |       |   å   |
+            // |       |     |     |      |      |      |                   |      |       |       |      |   ö   |   ä   |
+            // |       |     |     |      |      |      |        |  | EXIT  |      |       |       |      |       |       |
+            //               |     |      |      |      |        |  |       |      |       |       |      |
+
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans  &trans  &trans  &trans    &trans
+&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans  &trans  &trans  &trans    &kp LBKT
+&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans  &trans  &trans  &kp SEMI  &kp SQT
+&trans  &trans  &trans  &trans  &trans  &trans  &trans    &tog SWE  &trans  &trans  &trans  &trans  &trans    &trans
+                &trans  &trans  &trans  &trans  &trans    &trans    &trans  &trans  &trans  &trans
+            >;
+
+            sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
+        };
     };
-
-    nav_layer {
-      display-name = "nav";
-      // Navigation lock layer - tap LOWER to toggle, tap again or ESC to exit
-      // Vim-style HJKL arrows, everything else passes through
-      // ------------------------------------------------------------------------------------------------------------
-      // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
-      // |  EXIT |     |     |      |      |      |                   |      |       |       |      |       |       |
-      // |       |     |     |      |      |      |                   |   ←  |   ↓   |   ↑   |  →   |       |       |
-      // |       |     |     |      |      |      |        |  |       |      |       |       |      |       |       |
-      //               |     |      |      | EXIT |        |  |       |      |       |       |      |
-      bindings = <
-        &trans    &trans &trans &trans &trans &trans                       &trans    &trans   &trans &trans    &trans &trans
-        &tog NAV  &trans &trans &trans &trans &trans                       &trans    &trans   &trans &trans    &trans &trans
-        &trans    &trans &trans &trans &trans &trans                       &kp LEFT  &kp DOWN &kp UP &kp RIGHT &trans &trans
-        &trans    &trans &trans &trans &trans &trans &trans &trans         &trans    &trans   &trans &trans    &trans &trans
-                         &trans &trans &trans &tog NAV &trans &trans &trans &trans &trans &trans
-      >;
-
-      sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
-    };
-
-    swe_layer {
-      display-name = "swe";
-      // Swedish character layer - tap RET to toggle, tap again or ESC to exit
-      // å on position 23 (next to P), ö on position 34, ä on position 35
-      // ------------------------------------------------------------------------------------------------------------
-      // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
-      // |  EXIT |     |     |      |      |      |                   |      |       |       |      |       |   å   |
-      // |       |     |     |      |      |      |                   |      |       |       |      |   ö   |   ä   |
-      // |       |     |     |      |      |      |        |  |       |      |       |       |      |       |       |
-      //               |     |      |      |      |        |  | EXIT  |      |       |       |      |
-      bindings = <
-        &trans    &trans &trans &trans &trans &trans                       &trans    &trans &trans &trans &trans    &trans
-        &tog SWE  &trans &trans &trans &trans &trans                       &trans    &trans &trans &trans &trans    &kp LBKT
-        &trans    &trans &trans &trans &trans &trans                       &trans    &trans &trans &trans &kp SEMI  &kp SQT
-        &trans    &trans &trans &trans &trans &trans &trans &trans         &trans    &trans &trans &trans &trans    &trans
-                         &trans &trans &trans &trans &trans &tog SWE &trans &trans &trans &trans
-      >;
-
-      sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
-    };
-  };
 };
