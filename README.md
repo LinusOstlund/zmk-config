@@ -28,18 +28,20 @@ layout** for symbols to work correctly.
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │SHFT │  Z  │  X  │  C  │  V  │  B  │ [ENC]   │  N  │  M  │ ,;  │ .:  │ -_  │SHFT │
 └─────┴─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┴─────┘
-            │CTRL │ ALT │ GUI │LW/NV│   SPC    RET   │RAISE│CTRL │ ALT │ GUI │
+            │CTRL │ ALT │ GUI │LW/NV│SPC/CMD RET│RS/SW│←/CTL│↓/ALT│→/GUI│
             └─────┴─────┴─────┴─────┘                └─────┴─────┴─────┴─────┘
 ```
 
 **Key differences from standard Sofle:**
 
 - ESC top-left, CAPS on home row (where TAB usually is)
-- `^/~` next to P (tap-dance: tap=^, double-tap=~)
+- `^/~` next to P (tap-dance: tap=^, double-tap=~, 155ms)
 - `+/?` and `'` on home row (where ö/ä would be on full Swedish keyboard)
 - Swedish symbols via combos
-- Left thumb = Space, Right thumb = Enter (only Enter location)
+- **SPC/CMD**: tap = Space, hold = Cmd
 - **LW/NV key**: hold = LOWER layer, tap = toggle NAV mode
+- **RS/SW key**: hold = RAISE layer, tap = toggle SWE mode
+- **Right thumb mods**: tap = arrow (←↓→), hold = modifier (CTRL/ALT/GUI)
 
 ### Combos
 
@@ -76,9 +78,9 @@ Press keys **simultaneously** (within 50ms) on BASE layer:
 ┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
 │     │     │     │     │     │     │         │     │     │     │     │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│EXIT │     │     │     │     │     │         │     │     │  ↑  │     │     │     │
+│EXIT │     │     │     │     │     │         │     │     │     │     │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
-│     │     │     │     │     │     │         │     │  ←  │  ↓  │  →  │     │     │
+│     │     │     │     │     │     │         │  ←  │  ↓  │  ↑  │  →  │     │     │
 ├─────┼─────┼─────┼─────┼─────┼─────┼ [ENC]   ├─────┼─────┼─────┼─────┼─────┼─────┤
 │     │     │     │     │     │     │         │     │     │     │     │     │     │
 └─────┴─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┴─────┘
@@ -86,7 +88,27 @@ Press keys **simultaneously** (within 50ms) on BASE layer:
             └─────┴─────┴─────┴─────┘                └─────┴─────┴─────┴─────┘
 ```
 
-Only IJKL arrows are active; everything else passes through to BASE layer.
+Vim-style HJKL arrows on home row; everything else passes through to BASE layer.
+
+### SWE Layer (Tap RS/SW)
+
+**Tap** RS/SW to toggle Swedish character mode. Tap again or press ESC to exit.
+
+```text
+┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
+│     │     │     │     │     │     │         │     │     │     │     │     │     │
+├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+│EXIT │     │     │     │     │     │         │     │     │     │     │     │  å  │
+├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │     │     │     │     │         │     │     │     │     │  ö  │  ä  │
+├─────┼─────┼─────┼─────┼─────┼─────┼ [ENC]   ├─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │     │     │     │     │         │     │     │     │     │     │     │
+└─────┴─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┴─────┘
+            │     │     │     │     │                │EXIT │     │     │     │
+            └─────┴─────┴─────┴─────┘                └─────┴─────┴─────┴─────┘
+```
+
+Swedish characters å, ö, ä available; everything else passes through to BASE layer.
 
 **Special behaviors:**
 
@@ -98,7 +120,8 @@ Only IJKL arrows are active; everything else passes through to BASE layer.
 | LOWER + 9  | `]`      | Tap-dance: tap = ]               |
 | LOWER + 99 | `}`      | Tap-dance: double-tap = }        |
 | LOWER + +/?| `´`      | Acute accent                     |
-| LOWER + '  | `*`      | Asterisk                         |
+| LOWER + '  | `'`      | Tap-dance: tap = '               |
+| LOWER + '' | `*`      | Tap-dance: double-tap = *        |
 | LOWER + Z  | `<`      | Less than                        |
 | LOWER + X  | `>`      | Greater than                     |
 | LOWER + -_ | `\`      | Backslash                        |
@@ -264,14 +287,26 @@ zmk-config/
 
 ## Custom Behaviors
 
-### Tap-Dance (Brackets)
+### Tap-Dance
 
-| Key (LOWER) | Tap   | Double-Tap |
-| ----------- | ----- | ---------- |
-| 8 position  | `[`   | `{`        |
-| 9 position  | `]`   | `}`        |
+| Key          | Tap   | Double-Tap | Timing |
+| ------------ | ----- | ---------- | ------ |
+| ^/~ (pos 23) | `^`   | `~`        | 155ms  |
+| LOWER + 8    | `[`   | `{`        | 125ms  |
+| LOWER + 9    | `]`   | `}`        | 125ms  |
+| LOWER + 2    | `"`   | `@`        | 175ms  |
+| LOWER + '    | `'`   | `*`        | 155ms  |
 
-Tapping term: 125ms (175ms for td_n2)
+### Hold-Tap
+
+| Key         | Tap      | Hold    |
+| ----------- | -------- | ------- |
+| SPC/CMD     | Space    | Cmd     |
+| LW/NV       | tog NAV  | LOWER   |
+| RS/SW       | tog SWE  | RAISE   |
+| ←/CTL       | ←        | Ctrl    |
+| ↓/ALT       | ↓        | Alt     |
+| →/GUI       | →        | Gui     |
 
 ### Macros
 

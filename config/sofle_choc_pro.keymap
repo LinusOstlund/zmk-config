@@ -17,6 +17,7 @@
 #define RAISE 2
 #define ADJUST 3
 #define NAV 4
+#define SWE 5
 
 / {
 
@@ -108,8 +109,17 @@
     td_caret_tilde: tap_dance_caret_tilde {
       compatible = "zmk,behavior-tap-dance";
       #binding-cells = <0>;
-      tapping-term-ms = <125>;
+      tapping-term-ms = <155>;  // Right side: 155ms
       bindings = <&kp LS(RBKT)>, <&tilde>;  // ^ then ~
+    };
+
+    // Apostrophe/asterisk tap-dance for LOWER layer
+    // tap = ', double-tap = *
+    td_apos_star: tap_dance_apos_star {
+      compatible = "zmk,behavior-tap-dance";
+      #binding-cells = <0>;
+      tapping-term-ms = <155>;  // Right side: 155ms
+      bindings = <&kp BSLH>, <&kp LS(BSLH)>;  // ' then *
     };
 
     // Hold-tap for LOWER key: hold = momentary LOWER, tap = toggle NAV
@@ -119,6 +129,24 @@
       flavor = "balanced";
       tapping-term-ms = <200>;
       bindings = <&mo>, <&tog>;
+    };
+
+    // Hold-tap for RAISE key: hold = momentary RAISE, tap = toggle SWE
+    ht_raise_swe: hold_tap_raise_swe {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <2>;
+      flavor = "balanced";
+      tapping-term-ms = <200>;
+      bindings = <&mo>, <&tog>;
+    };
+
+    // Hold-tap for right thumb modifiers: tap = arrow, hold = modifier
+    ht_ctrl_left: hold_tap_ctrl_left {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <2>;
+      flavor = "balanced";
+      tapping-term-ms = <200>;
+      bindings = <&kp>, <&kp>;
     };
   };
 
@@ -180,15 +208,16 @@
       // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   | ^/~   |
       // | CAPS  |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |  +/?  |   '   |
       // | SHIFT |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  | PLAY  |  N   |  M    |  ,;   |  .:  |  -_   | SHIFT |
-      //               | CTRL| ALT  | GUI  |LWR/NV|  SPACE |  | ENTER | RAISE| CTRL  | ALT   | GUI  |
-      // LWR/NV: hold = LOWER layer, tap = toggle NAV mode (IJKL arrows)
+      //               | CTRL| ALT  | GUI  |LWR/NV| SPC/CMD|  | ENTER |RSE/SW| ←/CTL | ↓/ALT | →/GUI|
+      // LWR/NV: hold = LOWER, tap = toggle NAV | SPC/CMD: hold = Cmd, tap = Space
+      // RSE/SW: hold = RAISE, tap = toggle SWE | Right mods: tap = arrow, hold = mod
       // Combos: P+^=å, L++=ö, ++'=ä, S+P=Spotlight
       bindings = <
         &kp ESC   &kp N1 &kp N2   &kp N3   &kp N4    &kp N5                           &kp N6 &kp N7    &kp N8    &kp N9   &kp N0   &kp BSPC
         &kp TAB   &kp Q  &kp W    &kp E    &kp R     &kp T                            &kp Y  &kp U     &kp I     &kp O    &kp P    &td_caret_tilde
         &kp CLCK  &kp A  &kp S    &kp D    &kp F     &kp G                            &kp H  &kp J     &kp K     &kp L    &kp MINUS &kp BSLH
         &kp LSHFT &kp Z  &kp X    &kp C    &kp V     &kp B   &kp C_MUTE &kp C_PLAY    &kp N  &kp M     &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
-        &kp LCTRL &kp LALT &kp LGUI &ht_lower_nav LOWER NAV  &kp SPACE    &kp RET    &mo RAISE  &kp RCTRL &kp RALT  &kp RGUI
+        &kp LCTRL &kp LALT &kp LGUI &ht_lower_nav LOWER NAV  &mt LGUI SPACE    &kp RET    &ht_raise_swe RAISE SWE  &ht_ctrl_left RCTRL LEFT &ht_ctrl_left RALT DOWN  &ht_ctrl_left RGUI RIGHT
       >;
 
       sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
@@ -207,7 +236,7 @@
       bindings = <
         &trans    &kp LS(N1) &td_n2     &kp LS(N3) &kp RA(N4) &kp LS(N5)                &kp LS(N6) &m_pipe    &td_lbkt   &td_rbkt   &kp LS(MINUS)  &kp DEL
         &trans    &trans     &trans     &kp UP     &trans     &trans                    &kp PG_UP  &ht_word_l LG(LEFT) LA(LEFT)  &kp UP  &ht_word_r LG(RIGHT) LA(RIGHT)  &trans  &trans
-        &trans    &trans     &kp LEFT   &kp DOWN   &kp RIGHT  &trans                    &kp PG_DN  &kp LEFT   &kp DOWN   &kp RIGHT  &kp EQUAL  &kp LS(BSLH)
+        &trans    &trans     &kp LEFT   &kp DOWN   &kp RIGHT  &trans                    &kp PG_DN  &kp LEFT   &kp DOWN   &kp RIGHT  &kp EQUAL  &td_apos_star
         &trans    &kp NUBS   &kp LS(NUBS) &trans   &trans     &trans   &trans &trans    &trans     &trans     &trans     &trans     &kp RA(MINUS) &trans
         &trans    &trans     &trans     &trans     &trans     &trans   &trans &trans    &trans     &trans
       >;
@@ -255,19 +284,40 @@
     nav_layer {
       display-name = "nav";
       // Navigation lock layer - tap LOWER to toggle, tap again or ESC to exit
-      // Only IJKL arrows active, everything else passes through
+      // Vim-style HJKL arrows, everything else passes through
       // ------------------------------------------------------------------------------------------------------------
       // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
-      // |  EXIT |     |     |      |      |      |                   |      |       |   ↑   |      |       |       |
-      // |       |     |     |      |      |      |                   |      |   ←   |   ↓   |  →   |       |       |
+      // |  EXIT |     |     |      |      |      |                   |      |       |       |      |       |       |
+      // |       |     |     |      |      |      |                   |   ←  |   ↓   |   ↑   |  →   |       |       |
       // |       |     |     |      |      |      |        |  |       |      |       |       |      |       |       |
       //               |     |      |      | EXIT |        |  |       |      |       |       |      |
       bindings = <
-        &trans    &trans &trans &trans &trans &trans                       &trans &trans   &trans   &trans    &trans &trans
-        &tog NAV  &trans &trans &trans &trans &trans                       &trans &trans   &kp UP   &trans    &trans &trans
-        &trans    &trans &trans &trans &trans &trans                       &trans &kp LEFT &kp DOWN &kp RIGHT &trans &trans
-        &trans    &trans &trans &trans &trans &trans &trans &trans         &trans &trans   &trans   &trans    &trans &trans
+        &trans    &trans &trans &trans &trans &trans                       &trans    &trans   &trans &trans    &trans &trans
+        &tog NAV  &trans &trans &trans &trans &trans                       &trans    &trans   &trans &trans    &trans &trans
+        &trans    &trans &trans &trans &trans &trans                       &kp LEFT  &kp DOWN &kp UP &kp RIGHT &trans &trans
+        &trans    &trans &trans &trans &trans &trans &trans &trans         &trans    &trans   &trans &trans    &trans &trans
                          &trans &trans &trans &tog NAV &trans &trans &trans &trans &trans &trans
+      >;
+
+      sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
+    };
+
+    swe_layer {
+      display-name = "swe";
+      // Swedish character layer - tap RAISE to toggle, tap again or ESC to exit
+      // å on position 23 (next to P), ö on position 34, ä on position 35
+      // ------------------------------------------------------------------------------------------------------------
+      // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
+      // |  EXIT |     |     |      |      |      |                   |      |       |       |      |       |   å   |
+      // |       |     |     |      |      |      |                   |      |       |       |      |   ö   |   ä   |
+      // |       |     |     |      |      |      |        |  |       |      |       |       |      |       |       |
+      //               |     |      |      |      |        |  |       | EXIT |       |       |      |
+      bindings = <
+        &trans    &trans &trans &trans &trans &trans                       &trans &trans   &trans &trans &trans    &trans
+        &tog SWE  &trans &trans &trans &trans &trans                       &trans &trans   &trans &trans &trans    &kp LBKT
+        &trans    &trans &trans &trans &trans &trans                       &trans &trans   &trans &trans &kp SEMI  &kp SQT
+        &trans    &trans &trans &trans &trans &trans &trans &trans         &trans &trans   &trans &trans &trans    &trans
+                         &trans &trans &trans &trans &trans &trans &tog SWE &trans &trans &trans
       >;
 
       sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
