@@ -231,7 +231,7 @@
 
         combo_spotlight {
             timeout-ms = <50>;
-            key-positions = <42 43>;  // S=26, P=22
+            key-positions = <26 22>;  // S + P
             bindings = <&kp LG(SPACE)>;
             layers = <BASE>;
         };
@@ -266,11 +266,11 @@
             // Combos: P+^=å, L++=ö, ++'=ä, S+P=Spotlight
 
             bindings = <
-&kp ESC    &kp N1  &kp N2     &kp N3    &kp N4    &kp N5                                                           &kp N6                     &kp N7                          &kp N8                       &kp N9                    &kp N0     &kp BSPC
-&kp TAB    &kp Q   &kp W      &kp E     &kp R     &kp T                                                            &kp Y                      &kp U                           &kp I                        &kp O                     &kp P      &td_caret_tilde
-&kp CLCK   &kp A   &kp S      &kp D     &kp F     &kp G                                                            &kp H                      &kp J                           &kp K                        &kp L                     &kp PLUS   &kp ASTERISK
-&kp LSHFT  &kp Z   &kp X      &kp C     &kp V     &kp B                    &kp C_MUTE        &ht_fn_swe GLOBE SWE  &kp N                      &kp M                           &kp COMMA                    &kp DOT                   &kp MINUS  &kp EQUAL
-                   &kp LCTRL  &kp LALT  &kp LGUI  &ht_lower_nav LOWER NAV  &mt LGUI SPACE    &mt CAPSLOCK RET      &ht_raise_left RAISE LEFT  &ht_ctrl_left RCTRL DOWN_ARROW  &ht_ctrl_left RALT UP_ARROW  &ht_ctrl_left RGUI RIGHT
+&kp ESC    &kp N1  &kp N2     &kp N3    &kp N4    &kp N5                                                        &kp N6  &kp N7  &kp N8     &kp N9   &kp N0     &kp BSPC
+&kp TAB    &kp Q   &kp W      &kp E     &kp R     &kp T                                                         &kp Y   &kp U   &kp I      &kp O    &kp P      &td_caret_tilde
+&kp CLCK   &kp A   &kp S      &kp D     &kp F     &kp G                                                         &kp H   &kp J   &kp K      &kp L    &kp MINUS  &kp BSLH
+&kp LSHFT  &kp Z   &kp X      &kp C     &kp V     &kp B      &kp C_MUTE      &ht_fn_swe GLOBE SWE               &kp N   &kp M   &kp COMMA  &kp DOT  &kp FSLH   &kp RSHFT
+                   &kp LCTRL  &kp LALT  &kp LGUI  &ht_lower_nav LOWER NAV   &mt LGUI SPACE   &kp RET   &ht_raise_left RAISE LEFT  &ht_ctrl_left RCTRL LEFT  &ht_ctrl_left RALT DOWN  &ht_ctrl_left RGUI RIGHT
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
@@ -288,12 +288,17 @@
             //               |     |      |      |      |        |  |       |      |       |       |      |
             // Note: U/O have hold-tap: tap=word, hold=line
 
+            // LOWER layer: symbols + vim HJKL arrows + PgUp/Dn on Y/N
+            // Row 0: ! "/@ # $ % | & | [/{ ]/} ? DEL
+            // Row 1: (arrows on left SDF) | Y=PGUP, rest trans
+            // Row 2: (arrows on left SDF) | H=← J=↓ K=↑ L=→ ´ '/*
+            // Row 3: < > | N=PGDN, rest trans, \
             bindings = <
-&trans  &kp LS(N1)  &td_n2        &kp LS(N3)  &kp RA(N4)  &kp LS(N5)                    &kp LS(N6)  &m_pipe                         &td_lbkt  &td_rbkt                          &kp LS(MINUS)  &kp DEL
-&trans  &trans      &trans        &kp UP      &trans      &trans                        &trans      &ht_word_l (LG(LEFT)) LA(LEFT)  &none     &ht_word_r (LG(RIGHT)) LA(RIGHT)  &trans         &trans
-&trans  &trans      &kp LEFT      &kp DOWN    &kp RIGHT   &trans                        &kp LEFT    &kp DOWN_ARROW                  &kp DOWN  &kp RIGHT                         &kp EQUAL      &td_apos_star
-&trans  &kp NUBS    &kp LS(NUBS)  &trans      &trans      &trans      &trans    &trans  &trans      &trans                          &trans    &trans                            &kp RA(MINUS)  &trans
-                    &trans        &trans      &trans      &trans      &trans    &trans  &trans      &trans                          &trans    &trans
+&trans  &kp LS(N1)  &td_n2        &kp LS(N3)  &kp RA(N4)  &kp LS(N5)                    &kp LS(N6)  &m_pipe   &td_lbkt  &td_rbkt   &kp LS(MINUS)  &kp DEL
+&trans  &trans      &trans        &kp UP      &trans      &trans                        &kp PG_UP   &trans    &trans    &trans     &trans         &trans
+&trans  &trans      &kp LEFT      &kp DOWN    &kp RIGHT   &trans                        &kp LEFT    &kp DOWN  &kp UP    &kp RIGHT  &kp EQUAL      &td_apos_star
+&trans  &kp NUBS    &kp LS(NUBS)  &trans      &trans      &trans      &trans    &trans  &kp PG_DN   &trans    &trans    &trans     &kp RA(MINUS)  &trans
+                    &trans        &trans      &trans      &trans      &trans    &trans  &trans      &trans    &trans    &trans
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
@@ -341,24 +346,15 @@
 
         nav_layer {
             display-name = "nav";
-
             // Navigation lock layer - tap LOWER to toggle, tap again or ESC to exit
-            // Vim-style HJKL arrows, everything else passes through
-            // ------------------------------------------------------------------------------------------------------------
-            // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
-            // |  EXIT |     |     |      |      |      |                   |      |       |       |      |       |       |
-            // |       |     |     |      |      |      |                   |   ←  |   ↓   |   ↑   |  →   |       |       |
-            // |       |     |     |      |      |      |        |  |       |      |       |       |      |       |       |
-            //               |     |      |      | EXIT |        |  |       |      |       |       |      |
-
+            // Vim-style HJKL arrows only, everything else passes through
             bindings = <
-&tog 4  &trans  &trans  &trans  &trans  &trans                      &trans          &trans          &trans        &trans           &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                      &kp HOME        &kp PAGE_DOWN   &kp PAGE_UP   &kp END          &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                      &kp LEFT        &kp DOWN        &kp UP        &kp RIGHT        &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans    &trans  &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &trans  &trans
-                &trans  &trans  &trans  &tog NAV  &trans    &trans  &trans          &trans          &trans        &trans
+&trans    &trans  &trans  &trans  &trans  &trans                      &trans    &trans    &trans  &trans     &trans  &trans
+&tog NAV  &trans  &trans  &trans  &trans  &trans                      &trans    &trans    &trans  &trans     &trans  &trans
+&trans    &trans  &trans  &trans  &trans  &trans                      &kp LEFT  &kp DOWN  &kp UP  &kp RIGHT  &trans  &trans
+&trans    &trans  &trans  &trans  &trans  &trans    &trans    &trans  &trans    &trans    &trans  &trans     &trans  &trans
+                  &trans  &trans  &trans  &tog NAV  &trans    &trans  &trans    &trans    &trans  &trans
             >;
-
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
         };
 
