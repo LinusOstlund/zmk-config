@@ -131,13 +131,13 @@
       bindings = <&mo>, <&tog>;
     };
 
-    // Hold-tap for RAISE key: hold = momentary RAISE, tap = toggle SWE
-    ht_raise_swe: hold_tap_raise_swe {
+    // Hold-tap for RET key: tap = toggle SWE, hold = RET
+    ht_ret_swe: hold_tap_ret_swe {
       compatible = "zmk,behavior-hold-tap";
       #binding-cells = <2>;
       flavor = "balanced";
       tapping-term-ms = <200>;
-      bindings = <&mo>, <&tog>;
+      bindings = <&kp>, <&tog>;
     };
 
     // Hold-tap for right thumb modifiers: tap = arrow, hold = modifier
@@ -208,16 +208,16 @@
       // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   | ^/~   |
       // | CAPS  |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |  +/?  |   '   |
       // | SHIFT |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  | PLAY  |  N   |  M    |  ,;   |  .:  |  -_   | SHIFT |
-      //               | CTRL| ALT  | GUI  |LWR/NV| SPC/CMD|  | ENTER |RSE/SW| ←/CTL | ↓/ALT | →/GUI|
+      //               | CTRL| ALT  | GUI  |LWR/NV| SPC/CMD|  |RET/SWE| RAISE| ←/CTL | ↓/ALT | →/GUI|
       // LWR/NV: hold = LOWER, tap = toggle NAV | SPC/CMD: hold = Cmd, tap = Space
-      // RSE/SW: hold = RAISE, tap = toggle SWE | Right mods: tap = arrow, hold = mod
+      // RET/SWE: tap = toggle SWE, hold = RET | Right mods: tap = arrow, hold = mod
       // Combos: P+^=å, L++=ö, ++'=ä, S+P=Spotlight
       bindings = <
         &kp ESC   &kp N1 &kp N2   &kp N3   &kp N4    &kp N5                           &kp N6 &kp N7    &kp N8    &kp N9   &kp N0   &kp BSPC
         &kp TAB   &kp Q  &kp W    &kp E    &kp R     &kp T                            &kp Y  &kp U     &kp I     &kp O    &kp P    &td_caret_tilde
         &kp CLCK  &kp A  &kp S    &kp D    &kp F     &kp G                            &kp H  &kp J     &kp K     &kp L    &kp MINUS &kp BSLH
         &kp LSHFT &kp Z  &kp X    &kp C    &kp V     &kp B   &kp C_MUTE &kp C_PLAY    &kp N  &kp M     &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
-        &kp LCTRL &kp LALT &kp LGUI &ht_lower_nav LOWER NAV  &mt LGUI SPACE    &kp RET    &ht_raise_swe RAISE SWE  &ht_ctrl_left RCTRL LEFT &ht_ctrl_left RALT DOWN  &ht_ctrl_left RGUI RIGHT
+        &kp LCTRL &kp LALT &kp LGUI &ht_lower_nav LOWER NAV  &mt LGUI SPACE    &ht_ret_swe RET SWE    &mo RAISE  &ht_ctrl_left RCTRL LEFT &ht_ctrl_left RALT DOWN  &ht_ctrl_left RGUI RIGHT
       >;
 
       sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
@@ -304,20 +304,20 @@
 
     swe_layer {
       display-name = "swe";
-      // Swedish character layer - tap RAISE to toggle, tap again or ESC to exit
+      // Swedish character layer - tap RET to toggle, tap again or ESC to exit
       // å on position 23 (next to P), ö on position 34, ä on position 35
       // ------------------------------------------------------------------------------------------------------------
       // |       |     |     |      |      |      |                   |      |       |       |      |       |       |
       // |  EXIT |     |     |      |      |      |                   |      |       |       |      |       |   å   |
       // |       |     |     |      |      |      |                   |      |       |       |      |   ö   |   ä   |
       // |       |     |     |      |      |      |        |  |       |      |       |       |      |       |       |
-      //               |     |      |      |      |        |  |       | EXIT |       |       |      |
+      //               |     |      |      |      |        |  | EXIT  |      |       |       |      |
       bindings = <
-        &trans    &trans &trans &trans &trans &trans                       &trans &trans   &trans &trans &trans    &trans
-        &tog SWE  &trans &trans &trans &trans &trans                       &trans &trans   &trans &trans &trans    &kp LBKT
-        &trans    &trans &trans &trans &trans &trans                       &trans &trans   &trans &trans &kp SEMI  &kp SQT
-        &trans    &trans &trans &trans &trans &trans &trans &trans         &trans &trans   &trans &trans &trans    &trans
-                         &trans &trans &trans &trans &trans &trans &tog SWE &trans &trans &trans
+        &trans    &trans &trans &trans &trans &trans                       &trans    &trans &trans &trans &trans    &trans
+        &tog SWE  &trans &trans &trans &trans &trans                       &trans    &trans &trans &trans &trans    &kp LBKT
+        &trans    &trans &trans &trans &trans &trans                       &trans    &trans &trans &trans &kp SEMI  &kp SQT
+        &trans    &trans &trans &trans &trans &trans &trans &trans         &trans    &trans &trans &trans &trans    &trans
+                         &trans &trans &trans &trans &trans &tog SWE &trans &trans &trans &trans
       >;
 
       sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;

@@ -28,7 +28,7 @@ layout** for symbols to work correctly.
 ├─────┼─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┼─────┤
 │SHFT │  Z  │  X  │  C  │  V  │  B  │ [ENC]   │  N  │  M  │ ,;  │ .:  │ -_  │SHFT │
 └─────┴─────┼─────┼─────┼─────┼─────┤         ├─────┼─────┼─────┼─────┼─────┴─────┘
-            │CTRL │ ALT │ GUI │LW/NV│SPC/CMD RET│RS/SW│←/CTL│↓/ALT│→/GUI│
+            │CTRL │ ALT │ GUI │LW/NV│SPC/CMDRET/SW│RAISE│←/CTL│↓/ALT│→/GUI│
             └─────┴─────┴─────┴─────┘                └─────┴─────┴─────┴─────┘
 ```
 
@@ -40,7 +40,7 @@ layout** for symbols to work correctly.
 - Swedish symbols via combos
 - **SPC/CMD**: tap = Space, hold = Cmd
 - **LW/NV key**: hold = LOWER layer, tap = toggle NAV mode
-- **RS/SW key**: hold = RAISE layer, tap = toggle SWE mode
+- **RET/SW key**: tap = toggle SWE mode, hold = Enter
 - **Right thumb mods**: tap = arrow (←↓→), hold = modifier (CTRL/ALT/GUI)
 
 ### Combos
@@ -90,9 +90,9 @@ Press keys **simultaneously** (within 50ms) on BASE layer:
 
 Vim-style HJKL arrows on home row; everything else passes through to BASE layer.
 
-### SWE Layer (Tap RS/SW)
+### SWE Layer (Tap RET/SW)
 
-**Tap** RS/SW to toggle Swedish character mode. Tap again or press ESC to exit.
+**Tap** RET/SW to toggle Swedish character mode. Tap again or press ESC to exit.
 
 ```text
 ┌─────┬─────┬─────┬─────┬─────┬─────┐         ┌─────┬─────┬─────┬─────┬─────┬─────┐
@@ -303,7 +303,7 @@ zmk-config/
 | ----------- | -------- | ------- |
 | SPC/CMD     | Space    | Cmd     |
 | LW/NV       | tog NAV  | LOWER   |
-| RS/SW       | tog SWE  | RAISE   |
+| RET/SW      | tog SWE  | Enter   |
 | ←/CTL       | ←        | Ctrl    |
 | ↓/ALT       | ↓        | Alt     |
 | →/GUI       | →        | Gui     |
