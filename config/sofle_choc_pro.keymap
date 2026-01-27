@@ -270,7 +270,7 @@
 &kp TAB    &kp Q   &kp W      &kp E     &kp R     &kp T                                                         &kp Y   &kp U   &kp I      &kp O    &kp P      &td_caret_tilde
 &kp CLCK   &kp A   &kp S      &kp D     &kp F     &kp G                                                         &kp H   &kp J   &kp K      &kp L    &kp MINUS  &kp BSLH
 &kp LSHFT  &kp Z   &kp X      &kp C     &kp V     &kp B      &kp C_MUTE      &ht_fn_swe GLOBE SWE               &kp N   &kp M   &kp COMMA  &kp DOT  &kp FSLH   &kp RSHFT
-                   &kp LCTRL  &kp LALT  &kp LGUI  &ht_lower_nav LOWER NAV   &mt LGUI SPACE   &kp RET   &ht_raise_left RAISE LEFT  &ht_ctrl_left RCTRL LEFT  &ht_ctrl_left RALT DOWN  &ht_ctrl_left RGUI RIGHT
+                   &kp LCTRL  &kp LALT  &kp LGUI  &ht_lower_nav LOWER NAV   &kp SPACE   &kp RET   &ht_raise_left RAISE LEFT  &ht_ctrl_left RCTRL DOWN  &ht_ctrl_left RALT UP  &ht_ctrl_left RGUI RIGHT
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
