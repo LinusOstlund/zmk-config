@@ -279,20 +279,8 @@
         lower_layer {
             display-name = "lower";
 
-            // Swedish symbols with tap-dance on number row
-            // ------------------------------------------------------------------------------------------------------------
-            // |       |  !  | "/@ |  #   |  $   |  %   |                   |  &   |   |   |  [/{  | ]/}  |   ?  |  DEL  |
-            // |       |     |     |   ^  |      |      |                   | PGUP | ←W/←L |   ^   | W→/L→|       |       |
-            // |       |     |  <- |   v  |  ->  |      |                   | PGDN |  <-   |   v   |  ->  |   ´   |   *   |
-            // |       |  <  |  >  |      |      |      |        |  |       |      |       |       |      |   \   |       |
-            //               |     |      |      |      |        |  |       |      |       |       |      |
-            // Note: U/O have hold-tap: tap=word, hold=line
+            // LOWER: symbols + vim HJKL arrows + PgUp/Dn on Y/N
 
-            // LOWER layer: symbols + vim HJKL arrows + PgUp/Dn on Y/N
-            // Row 0: ! "/@ # $ % | & | [/{ ]/} ? DEL
-            // Row 1: (arrows on left SDF) | Y=PGUP, rest trans
-            // Row 2: (arrows on left SDF) | H=← J=↓ K=↑ L=→ ´ '/*
-            // Row 3: < > | N=PGDN, rest trans, \
             bindings = <
 &trans  &kp LS(N1)  &td_n2        &kp LS(N3)  &kp RA(N4)  &kp LS(N5)                    &kp LS(N6)  &m_pipe   &td_lbkt  &td_rbkt   &kp LS(MINUS)  &kp DEL
 &trans  &trans      &trans        &kp UP      &trans      &trans                        &kp PG_UP   &trans    &trans    &trans     &trans         &trans
