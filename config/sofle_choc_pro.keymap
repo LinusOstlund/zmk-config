@@ -202,10 +202,22 @@
             tapping-term-ms = <200>;
             bindings = <&kp>, <&kp>;
         };
+
+        // Hold-tap for Space: tap = Space, hold = CMD
+        // tap-preferred: prioritize tap for fast typing
+
+        hrm_space: home_row_mod_space {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <0>;
+            bindings = <&kp>, <&kp>;
+        };
     };
 
     // Swedish character combos (å ä ö) - adjacent key pairs
-    // P=22, ^/~=23, L=33, +/?=34, '=35
+    // P=22, ^/~=23, L=33, ==34, '=35
 
     combos {
         compatible = "zmk,combos";
@@ -219,7 +231,7 @@
             layers = <BASE>;
         };
 
-        // ö: L + +/? pressed together
+        // ö: L + = pressed together
 
         combo_oe {
             timeout-ms = <50>;
@@ -228,7 +240,7 @@
             layers = <BASE>;
         };
 
-        // ä: +/? + ' pressed together
+        // ä: = + ' pressed together
 
         combo_ae {
             timeout-ms = <50>;
@@ -241,6 +253,51 @@
             timeout-ms = <50>;
             key-positions = <42 43>;  // MUTE + FN/SWE (encoder buttons)
             bindings = <&kp LG(SPACE)>;
+            layers = <BASE>;
+        };
+
+        // Arrow combos on number row: 6-7-8-9-0
+        // 2-key = arrows, 3-key = word jump
+
+        combo_arrow_left {
+            timeout-ms = <50>;
+            key-positions = <6 7>;  // 6 + 7
+            bindings = <&kp LEFT>;
+            layers = <BASE>;
+        };
+
+        combo_arrow_down {
+            timeout-ms = <50>;
+            key-positions = <7 8>;  // 7 + 8
+            bindings = <&kp DOWN>;
+            layers = <BASE>;
+        };
+
+        combo_arrow_up {
+            timeout-ms = <50>;
+            key-positions = <8 9>;  // 8 + 9
+            bindings = <&kp UP>;
+            layers = <BASE>;
+        };
+
+        combo_arrow_right {
+            timeout-ms = <50>;
+            key-positions = <9 10>;  // 9 + 0
+            bindings = <&kp RIGHT>;
+            layers = <BASE>;
+        };
+
+        combo_word_left {
+            timeout-ms = <50>;
+            key-positions = <6 7 8>;  // 6 + 7 + 8
+            bindings = <&kp LA(LEFT)>;
+            layers = <BASE>;
+        };
+
+        combo_word_right {
+            timeout-ms = <50>;
+            key-positions = <8 9 10>;  // 8 + 9 + 0
+            bindings = <&kp LA(RIGHT)>;
             layers = <BASE>;
         };
     };
@@ -266,19 +323,21 @@
             // ------------------------------------------------------------------------------------------------------------
             // |  ESC  |  1  |  2  |  3   |  4   |  5   |                   |  6   |  7    |  8    |  9   |   0   | BKSPC |
             // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   | ^/~   |
-            // | CAPS  |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |  +/?  |   '   |
-            // | SHIFT |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  |FN/SWE |  N   |  M    |  ,;   |  .:  |  -_   | = |
-            //               | CTRL| ALT  | GUI  |LWR/NV|  SPC   |  |RET/CPS|RSE/← | ←/CTL | ↓/ALT | →/GUI|
+            // | CAPS  |  A  |  S  |  D   |  F   |  G   |                   |  H   |  J    |  K    |  L   |   =   |   '   |
+            // | SHIFT |  Z  |  X  |  C   |  V   |  B   |  MUTE  |  |FN/SWE |  N   |  M    |  ,;   |  .:  |  -_   | +/?   |
+            //               | CTRL| ALT  | GUI  |LWR/NV|SPC/CMD |  |RET/CPS|RSE/← | ←/CTL | ↓/ALT | →/GUI|
             // LWR/NV: hold = LOWER, tap = toggle NAV | RET/CPS: hold = Caps, tap = Enter
             // FN/SWE: tap = toggle SWE, hold = GLOBE (macOS fn) | RSE/←: tap = LEFT, hold = RAISE
-            // Combos: P+^=å, L++=ö, ++'=ä, MUTE+FN=Spotlight
+            // SPC/CMD: tap = Space, hold = CMD
+            // Combos: P+^=å, L+==ö, =+'=ä, MUTE+FN=Spotlight
+            // Arrows: 6+7=←, 7+8=↓, 8+9=↑, 9+0=→ | Word: 6+7+8=word←, 8+9+0=word→
 
             bindings = <
 &kp ESC    &kp N1  &kp N2     &kp N3    &kp N4    &kp N5                                                        &kp N6  &kp N7  &kp N8     &kp N9   &kp N0     &kp BSPC
 &kp TAB    &kp Q   &kp W      &kp E     &kp R     &kp T                                                         &kp Y   &kp U   &kp I      &kp O    &kp P      &td_caret_tilde
-&kp CLCK   &kp A   &kp S      &kp D     &kp F     &kp G                                                         &kp H   &kp J   &kp K      &kp L    &kp MINUS  &kp BSLH
-&kp LSHFT  &kp Z   &kp X      &kp C     &kp V     &kp B      &kp C_MUTE      &ht_fn_swe GLOBE SWE               &kp N   &kp M   &kp COMMA  &kp DOT  &kp FSLH   &kp EQUAL
-                   &kp LCTRL  &kp LALT  &kp LGUI  &ht_lower_nav LOWER NAV   &kp SPACE   &ht_ret_caps CLCK RET   &ht_raise_left RAISE LEFT  &ht_ctrl_left RCTRL DOWN  &ht_ctrl_left RALT UP  &ht_ctrl_left RGUI RIGHT
+&kp CLCK   &kp A   &kp S      &kp D     &kp F     &kp G                                                         &kp H   &kp J   &kp K      &kp L    &kp EQUAL  &kp BSLH
+&kp LSHFT  &kp Z   &kp X      &kp C     &kp V     &kp B      &kp C_MUTE      &ht_fn_swe GLOBE SWE               &kp N   &kp M   &kp COMMA  &kp DOT  &kp FSLH   &kp MINUS
+                   &kp LCTRL  &kp LALT  &kp LGUI  &ht_lower_nav LOWER NAV   &hrm_space LGUI SPACE   &ht_ret_caps CLCK RET   &ht_raise_left RAISE LEFT  &ht_ctrl_left RCTRL DOWN  &ht_ctrl_left RALT UP  &ht_ctrl_left RGUI RIGHT
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
